@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:padding="24dp"
+    tools:context="com.konieczny91.adam.snookercounter.StartActivity">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/titlesnookercounter"
+            android:layout_weight="2"/>
+
+        <Button
+            android:id="@+id/button_newMatch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/buttonselector"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="New Match" />
+
+        <Button
+            android:id="@+id/button_Statistics"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/buttonselector"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="Statistics" />
+
+        <Button
+            android:id="@+id/button_Exit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/buttonselector"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="Exit" />
+
+</LinearLayout>

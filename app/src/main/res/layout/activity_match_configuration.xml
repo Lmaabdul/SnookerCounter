@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:padding="24dp"
+
+    tools:context="com.konieczny91.adam.snookercounter.MatchConfigurationActivity">
+
+    <LinearLayout
+        android:id="@+id/linearId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/select_player_one_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Select Player One" />
+
+            <TextView
+                android:id="@+id/select_player_two_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textAppearance="?android:textAppearanceSmall"
+
+                tools:text="Select Player Two"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/spinner_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/select_player_one_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_weight="1">
+            </Spinner>
+
+
+            <Spinner
+                android:id="@+id/select_player_two_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_weight="1">
+            </Spinner>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearId"
+        android:orientation="vertical"
+        android:paddingTop="64dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/select_number_of_frames_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textAppearance="?android:textAppearanceSmall"
+
+                tools:text="Number of frames" />
+
+            <TextView
+                android:id="@+id/select_number_of_reds_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Number of reds"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="24dp">
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/frames_number_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+          />
+
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/reds_number_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                />
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/create_player_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonselector"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            tools:text="Create Player" />
+
+        <Button
+            android:id="@+id/start_match_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonselector"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="Start" />
+    </LinearLayout>
+
+
+
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor"
+    android:padding="16dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/firstname_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:hint="First Name"
+            android:padding="16dp"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/lastname_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:hint="Last Name"
+            android:padding="16dp"
+            android:layout_marginLeft="8dp"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/create_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="CREATE"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/buttonselector"
+                android:textAppearance="?android:textAppearanceMedium"
+                />
+
+
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="CANCEL"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/buttonselector"
+                android:textAppearance="?android:textAppearanceMedium"/>
+
+
+        </LinearLayout>
+
+</LinearLayout>
+

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Snooker Counter</string>
+    <string name="newMatchButton">New Match</string>
+    <string name="statisticsButton">Statistics</string>
+    <string name="exitButton">Exit</string>
+    <string name="selectPlayerOne">Select Player One</string>
+    <string name="selectPLayerTwo">Select Player Two</string>
+    <string name="createPayer">Create Player</string>
+    <string name="startButton">Start</string>
+    <string name="numberOfFrames">Number of Frames</string>
+    <string name="numberOfReds">Number of Reds</string>
+    <string name="create">CREATE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="samePlayersIssueMessage">You can not play against your self, pick another player or guest player instead</string>
+    <string name="remainingPoints">Remaining\nPoints</string>
+    <string name="whoStarts">Pick player who start the game</string>
+    <string name="playerOne">player one</string>
+    <string name="playerTwo">player two</string>
+    <string name="next">next</string>
+    <string name="miss">miss</string>
+    <string name="foul">foul</string>
+    <string name="more">more</string>
+    <string name="pickFoulBall">pick foul ball</string>
+    <string name="redsFoulInfo">Number of reds if potted or out of the table</string>
+    <string name="freeball">Free ball</string>
+    <string name="playerTurn">Pick Player to continue or assign free ball </string>
+    <string name="repeatFoul">repeat foul</string>
+    <string name="nextPlayer">Next player</string>
+</resources>

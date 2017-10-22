@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor"
+    android:padding="16dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/dialog_text_who_starts"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          tools:text="who starts the game?"
+          android:textAlignment="center"
+          android:textAppearance="?android:textAppearanceMedium"
+          android:paddingBottom="16dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/dialog_player_one"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="PLAYER ONE"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/buttonselector"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginBottom="2dp"
+            />
+
+
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/dialog_player_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="PLAYER TWO"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/buttonselector"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
