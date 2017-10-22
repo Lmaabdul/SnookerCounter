@@ -28,22 +28,16 @@ public class Balls {
         return maxPoints;
     }
 
-    public int calculateRemainingPoints(int points)
+    public int calculateRemainingPointsAllBalls(int points)
     {
-        if(colorBalls.isLastColorChoosed())
+
+        if(points==1)
         {
-            remainingPoints -= points;
+            remainingPoints -= redBall.getPoints();
         }
-        else
+        else if(points>1 && points<=7)
         {
-            if(points==1)
-            {
-                remainingPoints -= redBall.getPoints();
-            }
-            else if(points>1 && points<=7)
-            {
-                remainingPoints -= colorBalls.getColorPoints(Enums.colors.BLACK);
-            }
+            remainingPoints -= colorBalls.getColorPoints(Enums.colors.BLACK);
         }
 
         /* foul logic used 8 points to subtract from remaining points */
@@ -52,6 +46,24 @@ public class Balls {
             remainingPoints -= points;
         }
 
+
+        return remainingPoints;
+    }
+
+
+
+    public int calculateRemainingPointsOnlyColors(int points)
+    {
+        if(colorBalls.isLastColorChoosed())
+        {
+            remainingPoints -= points;
+        }
+
+        /* foul logic used 8 points to subtract from remaining points */
+        if(points>=8)
+        {
+            remainingPoints -= points;
+        }
 
         return remainingPoints;
     }

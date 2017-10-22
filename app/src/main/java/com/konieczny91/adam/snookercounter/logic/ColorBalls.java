@@ -20,7 +20,7 @@ public class ColorBalls {
 
     public ColorBalls() {}
 
-    public int getColorPoints(colors ballColor, boolean lastRed)
+    public int getColorPoints(colors ballColor)
     {
         int points;
 
@@ -57,54 +57,10 @@ public class ColorBalls {
 
         }
 
-        if (lastRed)
-        {
-            lastColorChosen = true;
-        }
-        else
-        {
-            lastColorChosen = false;
-        }
-
         currentColor = ballColor;
 
         return points;
     }
-
-    public int getColorPoints(colors ballColor)
-    {
-        int points = 0;
-
-        switch (ballColor)
-        {
-            case YELLOW:
-
-                points = yellowPoints;
-                break;
-            case GREEN:
-
-                points = greenPoints;
-                break;
-            case BROWN:
-
-                points = brownPoints;
-                break;
-            case BLUE:
-
-                points = bluePoints;
-                break;
-            case PINK:
-
-                points = pinkPoints;
-                break;
-            case BLACK:
-
-                points = blackPoints;
-                break;
-        }
-        return points;
-    }
-
 
     public void setCurrentColor(colors currentColor) {
         this.currentColor = currentColor;
