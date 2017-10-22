@@ -112,7 +112,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
     {
         boolean playerOneFouled = gamePlayers.isPlayerOneTurn();
         isFreeBall = freeBall;
-        //give foul points to the player
+        /* give foul points to the player */
         if (playerOneFouled)
         {
             playerTwo.addScore(foulPoints);
@@ -122,14 +122,14 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             playerOne.addScore(foulPoints);
         }
 
-        //remove fouled reds
+        /*remove fouled reds */
         redBall.removeRedBalls(numberOfReds);
 
-        //update score
+        /*update score */
         playerOneScoreView.setText(String.valueOf(playerOne.getScore()));
         playerTwoScoreView.setText(String.valueOf(playerTwo.getScore()));
 
-        //update player active
+        /*update player active */
         if (repeatFoul)
         {
             if(playerOneFouled)
@@ -161,24 +161,40 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
-
-
-
-        //calculate remaining points when reds are discarded
-        remainingPointsView.setText(String.valueOf(balls.calculateRemainigPoints(8*numberOfReds)));
-
-        //change to only red display when fouled player is not trying again
-        if (!repeatFoul && !freeBall)
+        /*(NEXT PLAYER BUTTON) change to only red display when fouled player is not trying again */
+        if (!repeatFoul && !freeBall) //NEXT PLAYER
         {
-            toggleColorButtons(false);
-            redButton.setEnabled(true);
-            redButton.setImageResource(R.drawable.redselector);
-            if(redBall.isPotted()) //remove 7 points when red ball was potted before foul
+            /* if all red balls lost start from the yellow ball */
+            if(redBall.noMoreRedBalls() && !colorBalls.isLastColorChoosed())
             {
-                remainingPointsView.setText(String.valueOf(balls.calculateRemainigPoints(colorBalls.getColorPoints(BLACK))));
+                toggleColorButtons(false);
+                yellowButton.setEnabled(true);
+                yellowButton.setImageResource(R.drawable.yellowselector);
+                redButton.setEnabled(false);
+                redButton.setImageResource(R.drawable.disabledball);
+                positionAfterNoMoreReds=1;
+            }
+            else if (!colorBalls.isLastColorChoosed())
+            {
+                toggleColorButtons(false);
+                redButton.setEnabled(true);
+                redButton.setImageResource(R.drawable.redselector);
+            }
+
+            /* remove 7 points when red ball was potted before foul */if(redBall.isPotted())
+            {
+                remainingPointsView.setText(String.valueOf(balls.calculateRemainingPoints(colorBalls.getColorPoints(BLACK))));
             }
             redBall.setPotted(false);
         }
+
+        /*
+            narazie do freeballa dziala tylko jak freebal zostanie uruchomiony gdy wyswietlona jest czerwona bila
+            teraz musze zrobic wtedy kiedy kolory sa wlaczone wtedy kolory maja zostac a po nich znowu wbic kolory
+            tak jakby czerwona byla trafiona ale nie odliczona od wszystkiego
+
+            pamietaj ze freeball to dodatkowe punkty  dlatego nie mozna ich odliczac
+         */
 
         if (freeBall)
         {
@@ -186,12 +202,18 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             toggleColorButtons(true);
             redButton.setEnabled(false);
             redButton.setImageResource(R.drawable.disabledball);
-            if(redBall.isPotted()) //remove 7 points when red ball was potted before foul
+
+            /* remove 7 points when red ball was potted before foul */
+            if(redBall.isPotted())
             {
-                remainingPointsView.setText(String.valueOf(balls.calculateRemainigPoints(colorBalls.getColorPoints(BLACK))));
+                remainingPointsView.setText(String.valueOf(balls.calculateRemainingPoints(colorBalls.getColorPoints(BLACK))));
             }
             redBall.setPotted(true);
         }
+
+         /*calculate remaining points when reds are discarded */
+        remainingPointsView.setText(String.valueOf(balls.calculateRemainingPoints(8*numberOfReds)));
+
 
 
     }
@@ -211,55 +233,55 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.yellow_ball_button:
 
-                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(colors.YELLOW,redBall.noMoreRedBalls(),isFreeBall));
-                if (!isFreeBall) redBall.setPotted(false);
+                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(colors.YELLOW,redBall.noMoreRedBalls()));
+                redBall.setPotted(false);
                 break;
 
             case R.id.green_ball_button:
 
-                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(colors.GREEN,redBall.noMoreRedBalls(),isFreeBall));
-                if (!isFreeBall) redBall.setPotted(false);
+                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(colors.GREEN,redBall.noMoreRedBalls()));
+                redBall.setPotted(false);
                 break;
 
             case R.id.brown_ball_button:
 
-                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(BROWN,redBall.noMoreRedBalls(),isFreeBall));
-                if (!isFreeBall) redBall.setPotted(false);
+                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(BROWN,redBall.noMoreRedBalls()));
+                redBall.setPotted(false);
                 break;
 
             case R.id.blue_ball_button:
 
-                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(colors.BLUE,redBall.noMoreRedBalls(),isFreeBall));
-                if (!isFreeBall) redBall.setPotted(false);
+                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(colors.BLUE,redBall.noMoreRedBalls()));
+                redBall.setPotted(false);
                 break;
 
             case R.id.pink_ball_button:
 
-                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(PINK,redBall.noMoreRedBalls(),isFreeBall));
-                if (!isFreeBall) redBall.setPotted(false);
+                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(PINK,redBall.noMoreRedBalls()));
+                redBall.setPotted(false);
                 break;
 
             case R.id.black_ball_button:
 
-                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(BLACK,redBall.noMoreRedBalls(),isFreeBall));
-                if (!isFreeBall) redBall.setPotted(false);
+                currentScoredPoints = gamePlayers.addScore(colorBalls.getColorPoints(BLACK,redBall.noMoreRedBalls()));
+                redBall.setPotted(false);
                 break;
 
             case R.id.miss_button:
 
-                /** if next frame then do nothing */
+                /* if next frame then do nothing */
                 if(gamePlayers.isNextFrame())
                 {
                     break;
                 }
 
-                /** clear current score points do not update score with points before */
+                /* clear current score points do not update score with points before */
                 currentScoredPoints = 0;
 
-                /** if player didn't pot a color after red the points are lost so update score with 7 */
+                /* if player didn't pot a color after red the points are lost so update score with 7 */
                 if(redBall.isPotted() && !colorBalls.isLastColorChoosed()) currentScoredPoints = 7;
 
-                /** if player pot last red and didn't pot color set the UI to only yellow on table*/
+                /* if player pot last red and didn't pot color set the UI to only yellow on table*/
                 if(redBall.noMoreRedBalls() && !colorBalls.isLastColorChoosed())
                 {
                     toggleColorButtons(false);
@@ -276,15 +298,14 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.foul_button:
 
-                /** show foul dialog */
+                /* show foul dialog */
                 FragmentManager manager = getSupportFragmentManager();
-                FoulDialog dialog = FoulDialog.newInstance(reds);
+                FoulDialog dialog = FoulDialog.newInstance(redBall.getCount());
                 dialog.show(manager,"TAG");
                 break;
         }
 
-        /** update UI section */
-
+        /* update UI section */
         if (redBall.noMoreRedBalls() && colorBalls.isLastColorChoosed())
         {
             updateUIOnlyColorBalls(v);
@@ -294,9 +315,13 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             updateUIAllBalls(v);
         }
 
-     //   updateUI(v);
+        /* clear state flags*/
+        gamePlayers.setPlayerMissed(false);
+        isFreeBall = false;
 
-        /** ---------------------------------------------*/
+
+         //   updateUI(v);
+
     }
 
     private void updateUIAllBalls(View v)
@@ -304,14 +329,14 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
 
         int currentButton = v.getId();
 
-        /** dont update UI when foul button was pushed */
+        /* don't update UI when foul button was pushed */
         if (currentButton == R.id.foul_button) return;
 
-        /** update UI when active player is changed */
+        /* update UI when active player is changed */
         changePlayers();
 
-        /** update remaining points or not when free ball is set -> free ball points are additional points */
-        if(!isFreeBall) remainingPointsView.setText(String.valueOf(balls.calculateRemainigPoints(currentScoredPoints)));
+        /* update remaining points or not when free ball is set -> free ball points are additional points */
+        if(!isFreeBall) remainingPointsView.setText(String.valueOf(balls.calculateRemainingPoints(currentScoredPoints)));
 
         if (redBall.isPotted())
         {
@@ -326,28 +351,29 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             redButton.setImageResource(R.drawable.redselector);
         }
 
-        /** clear state flags*/
+        /* clear state flags*/
         gamePlayers.setPlayerMissed(false);
         isFreeBall = false;
+
     }
 
     private void updateUIOnlyColorBalls(View v)
     {
         int currentButton = v.getId();
 
-        /** dont update UI when foul button was pushed */
+        /* don't update UI when foul button was pushed */
         if (currentButton == R.id.foul_button) return;
 
-        /** update UI when active player is changed */
+        /* update UI when active player is changed */
         changePlayers();
 
-        /** update remaining points or not when free ball is set -> free ball points are additional points */
-        if(!isFreeBall) remainingPointsView.setText(String.valueOf(balls.calculateRemainigPoints(currentScoredPoints)));
+        /* update remaining points or not when free ball is set -> free ball points are additional points */
+        if(!isFreeBall) remainingPointsView.setText(String.valueOf(balls.calculateRemainingPoints(currentScoredPoints)));
 
         redButton.setEnabled(false);
         redButton.setImageResource(R.drawable.disabledball);
 
-        /** leave the current state of UI after player missed */
+        /* leave the current state of UI after player missed */
         if (gamePlayers.isPlayerMissed())
         {
             gamePlayers.setPlayerMissed(false);
@@ -390,7 +416,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         }
         positionAfterNoMoreReds++;
 
-        /** change miss button text to "next" */
+        /* change miss button text to "next" */
         if (gamePlayers.isNextFrame())
         {
             missButton.setText(R.string.next);
@@ -398,14 +424,14 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             moreButton.setEnabled(false);
         }
 
-        /** if player pushed miss button (next button) than set new frame */
+        /* if player pushed miss button (next button) than set new frame */
         if(gamePlayers.isNextFrame() && currentButton == R.id.miss_button)
         {
             playerOneStarts = !playerOneStarts;
             setFrame();
         }
 
-        /** clear state flags*/
+        /* clear state flags*/
         gamePlayers.setPlayerMissed(false);
         isFreeBall = false;
     }
@@ -484,7 +510,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
 
         gamePlayers.setPlayerOneTurn(playerOneStarts);
 
-        /** update number of frames */
+        /* update number of frames */
         framesCountView.setText("( " + String.valueOf(frames) + " )");
 
         if (playerOneStarts)
@@ -502,7 +528,6 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         {
             redBall.isPotted();
             colorBalls.setLastColorChoosed(true);
-            balls.setOnlyColorOnTableCount(true);
             onlyColorsOnTable();
         }
         else
@@ -520,12 +545,12 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         moreButton = (Button) findViewById(R.id.more_button);
 
         redButton       = (ImageButton) findViewById(R.id.red_ball_button);
-        yellowButton    = (ImageButton) findViewById(R.id.yellow_ball_button);;
-        greenButton     = (ImageButton) findViewById(R.id.green_ball_button);;
-        brownButton     = (ImageButton) findViewById(R.id.brown_ball_button);;
-        blueButton      = (ImageButton) findViewById(R.id.blue_ball_button);;
-        pinkButton      = (ImageButton) findViewById(R.id.pink_ball_button);;
-        blackButton     = (ImageButton) findViewById(R.id.black_ball_button);;
+        yellowButton    = (ImageButton) findViewById(R.id.yellow_ball_button);
+        greenButton     = (ImageButton) findViewById(R.id.green_ball_button);
+        brownButton     = (ImageButton) findViewById(R.id.brown_ball_button);
+        blueButton      = (ImageButton) findViewById(R.id.blue_ball_button);
+        pinkButton      = (ImageButton) findViewById(R.id.pink_ball_button);
+        blackButton     = (ImageButton) findViewById(R.id.black_ball_button);
 
 
         playerOneView       = (TextView) findViewById(R.id.player_one);
@@ -669,16 +694,16 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
     {
         int currentButton = v.getId();
 
-        /** dont update UI when foul button was pushed */
+        /* dont update UI when foul button was pushed */
         if (currentButton == R.id.foul_button) return;
 
-        /** update UI when active player is changed */
+        /* update UI when active player is changed */
         changePlayers();
 
-        /** update remaining points or not when free ball is set -> free ball points are additional points */
-        if(!isFreeBall) remainingPointsView.setText(String.valueOf(balls.calculateRemainigPoints(currentScoredPoints)));
+        /* update remaining points or not when free ball is set -> free ball points are additional points */
+        if(!isFreeBall) remainingPointsView.setText(String.valueOf(balls.calculateRemainingPoints(currentScoredPoints)));
 
-        /** update Balls */
+        /* update Balls */
         if (redBall.noMoreRedBalls() && colorBalls.isLastColorChoosed())
         {
             //  onlyColorsOnTable();

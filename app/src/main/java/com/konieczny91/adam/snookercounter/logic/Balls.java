@@ -10,8 +10,6 @@ public class Balls {
     private RedBall redBall;
     private ColorBalls colorBalls;
     private int remainingPoints;
-    private boolean onlyColorOnTableCount = false;
-
 
     public Balls(RedBall redBall, ColorBalls colorBalls)
     {
@@ -30,19 +28,11 @@ public class Balls {
         return maxPoints;
     }
 
-    public int calculateRemainigPoints(int points)
+    public int calculateRemainingPoints(int points)
     {
         if(colorBalls.isLastColorChoosed())
         {
-            if(onlyColorOnTableCount)
-            {
-                remainingPoints -= points;
-            }
-            else if(points>1 && points<=7)
-            {
-                remainingPoints -= colorBalls.getColorPoints(Enums.colors.BLACK);
-            }
-            onlyColorOnTableCount = true;
+            remainingPoints -= points;
         }
         else
         {
@@ -54,16 +44,16 @@ public class Balls {
             {
                 remainingPoints -= colorBalls.getColorPoints(Enums.colors.BLACK);
             }
-            else if(points>7) //for foul logic
-            {
-                remainingPoints -= points;
-            }
         }
+
+        /* foul logic used 8 points to subtract from remaining points */
+        if(points>=8)
+        {
+            remainingPoints -= points;
+        }
+
 
         return remainingPoints;
     }
 
-    public void setOnlyColorOnTableCount(boolean onlyColorOnTableCount) {
-        this.onlyColorOnTableCount = onlyColorOnTableCount;
-    }
 }

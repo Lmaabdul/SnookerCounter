@@ -14,17 +14,15 @@ public class ColorBalls {
     private final int blackPoints  = 7;
     private final int maxPoints = 27;
 
-    private boolean lastColorChosed = false;
+    private boolean lastColorChosen = false;
 
     private colors currentColor;
 
-
-
     public ColorBalls() {}
 
-    public int getColorPoints(colors ballColor, boolean lastRed, boolean freeBall)
+    public int getColorPoints(colors ballColor, boolean lastRed)
     {
-        int points = 0;
+        int points;
 
         switch (ballColor)
         {
@@ -52,21 +50,20 @@ public class ColorBalls {
 
                 points = blackPoints;
                 break;
-        }
 
-        if(freeBall)
-        {
-            points = 1;
-        }
+            default:
 
+                points = 0;
+
+        }
 
         if (lastRed)
         {
-            lastColorChosed = true;
+            lastColorChosen = true;
         }
         else
         {
-            lastColorChosed = false;
+            lastColorChosen = false;
         }
 
         currentColor = ballColor;
@@ -119,11 +116,11 @@ public class ColorBalls {
 
 
     public boolean isLastColorChoosed() {
-        return lastColorChosed;
+        return lastColorChosen;
     }
 
     public void setLastColorChoosed(boolean lastColorChosed) {
-        this.lastColorChosed = lastColorChosed;
+        this.lastColorChosen = lastColorChosed;
     }
 
     public int getMaxPoints() {
