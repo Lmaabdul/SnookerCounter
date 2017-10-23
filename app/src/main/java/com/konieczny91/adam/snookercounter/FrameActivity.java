@@ -167,7 +167,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         if (!repeatFoul && !freeBall) //NEXT PLAYER
         {
             /* if all red balls lost start from the yellow ball */
-            if(redBall.noMoreRedBalls())
+            if(redBall.noMoreRedBalls()&& positionAfterNoMoreReds==0)
             {
                 toggleColorButtons(false);
                 yellowButton.setEnabled(true);
@@ -184,7 +184,8 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
                 redButton.setImageResource(R.drawable.redselector);
             }
 
-            /* remove 7 points when red ball was potted before foul */if(redBall.isPotted())
+            /* remove 7 points when red ball was potted before foul */
+            if(redBall.isPotted())
             {
                 remainingPointsView.setText(String.valueOf(balls.calculateRemainingPointsAllBalls(colorBalls.getColorPoints(BLACK))));
             }
@@ -257,7 +258,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.black_ball_button:
 
-                colorBalls.setCurrentColor(colors.BLACK);
+                colorBalls.setCurrentColor(BLACK);
                 break;
 
             case R.id.miss_button:
@@ -282,7 +283,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
                     yellowButton.setImageResource(R.drawable.yellowselector);
                     colorBalls.setLastColorChoosed(true);
                     positionAfterNoMoreReds=1;
-                    remainingPointsView.setText(String.valueOf(balls.calculateRemainingPointsAllBalls(7)));
+                    if(!isFreeBall)remainingPointsView.setText(String.valueOf(balls.calculateRemainingPointsAllBalls(7)));
                 }
 
                 gamePlayers.changePlayer();
@@ -340,7 +341,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
           /* update remaining points or not when free ball is set -> free ball points are additional points
         * if there is transition between all balls and only colors update ui use the calculateRemainingPointsAllBalls
         * */
-         if (isFreeBall) return;
+        if (isFreeBall) return;
 
         if(positionAfterNoMoreReds==0)
         {
@@ -381,6 +382,14 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         /* here after putting color as a red you can choose another color */
         if(isFreeBall)
         {
+            if(gamePlayers.isPlayerMissed())
+            {
+                currentScoredPoints = 0;
+                clickCounter=0;
+                isFreeBall=false;
+                gamePlayers.setPlayerMissed(false);
+                return;
+            }
             if(clickCounter==0)
             {
                 turnColorsOn();
@@ -421,8 +430,9 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         redButton.setImageResource(R.drawable.disabledball);
 
         /* leave the current state of UI after player missed */
-        if (gamePlayers.isPlayerMissed())
+        if (gamePlayers.isPlayerMissed() && !isFreeBall)
         {
+            clickCounter=0;
             gamePlayers.setPlayerMissed(false);
             return;
         }
@@ -430,7 +440,13 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         /* if freeball than all colors are avaiable and one of them is red */
         if(isFreeBall)
         {
-            if(clickCounter==0)
+            if(gamePlayers.isPlayerMissed())
+            {
+                isFreeBall=false;
+                clickCounter=0;
+                if(positionAfterNoMoreReds>0) positionAfterNoMoreReds-=1;
+            }
+            else if(clickCounter==0)
             {
                 turnColorsOn();
             }
