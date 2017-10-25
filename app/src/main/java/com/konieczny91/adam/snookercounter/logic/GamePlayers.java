@@ -39,25 +39,30 @@ public class GamePlayers {
         return currentScore;
     }
 
-    public void frameWin()
+    public int frameWin()
     {
         if (one.getScore()>two.getScore())
         {
             one.frameWin();
+            return 1;
         }
         else if (one.getScore()<two.getScore())
         {
             two.frameWin();
+            return 2;
         }
         else if (one.getScore()==two.getScore())
         {
             one.frameWin();
             two.frameWin();
+            return 3;
         }
 
         nextFrame = true;
+        return 0;
 
     }
+
 
     public int getScore()
     {
@@ -112,8 +117,6 @@ public class GamePlayers {
             return two.getLastName();
         }
     }
-
-
 
     public boolean isPlayerMissed() {
         return playerMissed;

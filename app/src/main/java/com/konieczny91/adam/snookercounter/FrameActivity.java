@@ -20,13 +20,14 @@ import com.konieczny91.adam.snookercounter.logic.Enums.colors;
 import com.konieczny91.adam.snookercounter.logic.Foul;
 import com.konieczny91.adam.snookercounter.logic.FoulDialog;
 import com.konieczny91.adam.snookercounter.logic.GamePlayers;
+import com.konieczny91.adam.snookercounter.logic.NextFrameDialog;
 import com.konieczny91.adam.snookercounter.logic.Player;
 import com.konieczny91.adam.snookercounter.logic.RedBall;
 
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.BLACK;
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.NO_COLOR;
 
-public class FrameActivity extends AppCompatActivity implements View.OnClickListener, FoulDialog.FoulDialogListener{
+public class FrameActivity extends AppCompatActivity implements View.OnClickListener, FoulDialog.FoulDialogListener, NextFrameDialog.NextFrameListener{
 
 
     int reds;
@@ -192,12 +193,6 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
             redBall.setPotted(false);
         }
 
-        /*
-            freeball dziala gdy wszystki kolory sa na stole, gdy nie ma czerwonych to nie dziala
-
-            pamietaj ze freeball to dodatkowe punkty  dlatego nie mozna ich odliczac
-        */
-
         if (freeBall)
         {
             Toast.makeText(getApplicationContext(),"Any color ball worth 1 point",Toast.LENGTH_SHORT).show();
@@ -216,6 +211,12 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
+    }
+
+    @Override
+    public void onFinishNextFrameDialog()
+    {
+        setFrame();
     }
 
     @Override
@@ -341,7 +342,10 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
           /* update remaining points or not when free ball is set -> free ball points are additional points
         * if there is transition between all balls and only colors update ui use the calculateRemainingPointsAllBalls
         * */
+
+        if (gamePlayers.isNextFrame())return;
         if (isFreeBall) return;
+
 
         if(positionAfterNoMoreReds==0)
         {
@@ -493,31 +497,54 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
                 blackButton.setImageResource(R.drawable.blackselector);
                 break;
             case 6:
-                gamePlayers.frameWin();
+                //prepare for next frame logic
+                missButton.setText(R.string.next);
+                foulButton.setEnabled(false);
+                moreButton.setEnabled(false);
+                gamePlayers.setNextFrame(true);
                 break;
+            case 7:
+                //Next frame logic is here
+                if(gamePlayers.isNextFrame() && currentButton == R.id.miss_button)
+                {
+                    nextFrame();
+                }
 
 
         }
         positionAfterNoMoreReds++;
 
-        /* change miss button text to "next" */
-        if (gamePlayers.isNextFrame())
-        {
-            missButton.setText(R.string.next);
-            foulButton.setEnabled(false);
-            moreButton.setEnabled(false);
-        }
-
-        /* if player pushed miss button (next button) than set new frame */
-        if(gamePlayers.isNextFrame() && currentButton == R.id.miss_button)
-        {
-            playerOneStarts = !playerOneStarts;
-            setFrame();
-        }
-
         /* clear state flags*/
         gamePlayers.setPlayerMissed(false);
         isFreeBall = false;
+    }
+    private void nextFrame()
+    {
+        int result = 0;
+        NextFrameDialog dialog = null;
+
+        /* if player pushed miss button (next button) than set new frame */
+
+            playerOneStarts = !playerOneStarts;
+            FragmentManager manager = getSupportFragmentManager();
+
+            result = gamePlayers.frameWin();
+
+            if(result==1)
+            {
+                dialog = NextFrameDialog.newInstance(playerOneFN,playerOneLN);
+            }
+            else if (result==2)
+            {
+                dialog = NextFrameDialog.newInstance(playerTwoFN,playerTwoLN);
+            }
+            else if (result==3)
+            {
+                dialog = NextFrameDialog.newInstance();
+            }
+
+            dialog.show(manager,"nextFrameDialog");
+
     }
 
     private void toggleColorButtons(boolean toggle )
@@ -668,7 +695,7 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
     private void initPlayers()
     {
         playerOne = new Player(playerOneFN,playerOneLN);
-        playerTwo = new Player(playerTwoFN,playerTwoFN);
+        playerTwo = new Player(playerTwoFN,playerTwoLN);
         gamePlayers = new GamePlayers(playerOne,playerTwo);
     }
 
@@ -739,38 +766,9 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         redButton.setImageResource(R.drawable.disabledball);
 
         toggleColorButtons(false);
-        switch (positionAfterNoMoreReds)
-        {
-            case 0:
-                yellowButton.setEnabled(true);
-                yellowButton.setImageResource(R.drawable.yellowselector);
-                break;
-            case 1:
-                greenButton.setEnabled(true);
-                greenButton.setImageResource(R.drawable.greenselector);
-                break;
-            case 2:
-                brownButton.setEnabled(true);
-                brownButton.setImageResource(R.drawable.brownselector);
-                break;
-            case 3:
-                blueButton.setEnabled(true);
-                blueButton.setImageResource(R.drawable.blueselector);
-                break;
-            case 4:
-                pinkButton.setEnabled(true);
-                pinkButton.setImageResource(R.drawable.pinkselector);
-                break;
-            case 5:
-                blackButton.setEnabled(true);
-                blackButton.setImageResource(R.drawable.blackselector);
-                break;
-            case 6:
-                gamePlayers.frameWin();
-                break;
+        yellowButton.setEnabled(true);
+        yellowButton.setImageResource(R.drawable.yellowselector);
 
-
-        }
         positionAfterNoMoreReds++;
     }
 

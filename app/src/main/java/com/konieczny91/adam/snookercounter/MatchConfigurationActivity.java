@@ -69,6 +69,8 @@ public class MatchConfigurationActivity extends AppCompatActivity {
         selectPlayerOneSpinner.setAdapter(adapter);
         selectPlayerTwoSpinner.setAdapter(adapter);
 
+        selectPlayerTwoSpinner.setSelection(1);
+
         selectPlayerOneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -144,7 +146,7 @@ public class MatchConfigurationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(playerOne.equals(playerTwo) && (!playerOne.equals(players.get(0)) || !playerTwo.equals(players.get(0))))
+                if(playerOne.equals(playerTwo))
                 {
                     Toast.makeText(MatchConfigurationActivity.this, R.string.samePlayersIssueMessage, Toast.LENGTH_SHORT).show();
                 }
@@ -166,9 +168,10 @@ public class MatchConfigurationActivity extends AppCompatActivity {
 
     private void createGuestPlayers()
     {
-        players.add(new Player("Guest","Guest"));
+        players.add(new Player("Guest","1"));
+        players.add(new Player("Guest","2"));
         playerOne = players.get(0);
-        playerTwo = players.get(0);
+        playerTwo = players.get(1);
     }
 
     private void numberPickerInit()

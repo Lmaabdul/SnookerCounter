@@ -28,4 +28,5 @@
     <string name="playerTurn">Pick Player to continue or assign free ball </string>
     <string name="repeatFoul">repeat foul</string>
     <string name="nextPlayer">Next player</string>
+    <string name="nextFrameContinue">aa</string>
 </resources>
