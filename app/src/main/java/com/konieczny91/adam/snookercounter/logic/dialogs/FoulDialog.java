@@ -1,4 +1,4 @@
-package com.konieczny91.adam.snookercounter.logic;
+package com.konieczny91.adam.snookercounter.logic.dialogs;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.konieczny91.adam.snookercounter.R;
+import com.konieczny91.adam.snookercounter.logic.Enums;
 
 /**
  * Created by Adam on 07.10.2017.

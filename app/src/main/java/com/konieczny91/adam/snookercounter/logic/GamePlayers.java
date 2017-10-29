@@ -39,27 +39,42 @@ public class GamePlayers {
         return currentScore;
     }
 
-    public int frameWin()
+    public Enums.winState frameWin(int maxFrames)
     {
+        Enums.winState result = Enums.winState.NO_INFO;
+
         if (one.getScore()>two.getScore())
         {
             one.frameWin();
-            return 1;
+            result = Enums.winState.PLAYER_ONE_WIN_FRAME;
         }
         else if (one.getScore()<two.getScore())
         {
             two.frameWin();
-            return 2;
+            result = Enums.winState.PLAYER_TWO_WIN_FRAME;
         }
         else if (one.getScore()==two.getScore())
         {
             one.frameWin();
             two.frameWin();
-            return 3;
+            result = Enums.winState.PLAYERS_DRAW;
+        }
+
+
+        if(one.getFrames()+two.getFrames()== maxFrames)
+        {
+            if(result == Enums.winState.PLAYER_ONE_WIN_FRAME)
+            {
+                result = Enums.winState.PLAYER_ONE_WIN_MATCH;
+            }
+            else if(result == Enums.winState.PLAYER_TWO_WIN_FRAME)
+            {
+                result = Enums.winState.PLAYER_TWO_WIN_MATCH;
+            }
         }
 
         nextFrame = true;
-        return 0;
+        return result;
 
     }
 

@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             tools:hint="First Name"
             android:padding="16dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="20dp"
             android:textAppearance="?android:textAppearanceSmall"/>
 
         <EditText
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             tools:hint="Last Name"
             android:padding="16dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="2dp"
             android:textAppearance="?android:textAppearanceSmall"/>
 
     </LinearLayout>
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content"
                 tools:text="CREATE"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/buttonselector"
                 android:textAppearance="?android:textAppearanceMedium"
                 />

@@ -1,4 +1,4 @@
-package com.konieczny91.adam.snookercounter.logic;
+package com.konieczny91.adam.snookercounter.logic.dialogs;
 
 import android.graphics.Typeface;
 import android.os.Bundle;

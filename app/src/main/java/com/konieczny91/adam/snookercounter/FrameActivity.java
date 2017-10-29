@@ -16,18 +16,26 @@ import android.widget.Toast;
 
 import com.konieczny91.adam.snookercounter.logic.Balls;
 import com.konieczny91.adam.snookercounter.logic.ColorBalls;
+import com.konieczny91.adam.snookercounter.logic.Enums;
 import com.konieczny91.adam.snookercounter.logic.Enums.colors;
 import com.konieczny91.adam.snookercounter.logic.Foul;
-import com.konieczny91.adam.snookercounter.logic.FoulDialog;
+import com.konieczny91.adam.snookercounter.logic.dialogs.EndMatchDialog;
+import com.konieczny91.adam.snookercounter.logic.dialogs.FoulDialog;
 import com.konieczny91.adam.snookercounter.logic.GamePlayers;
-import com.konieczny91.adam.snookercounter.logic.NextFrameDialog;
+import com.konieczny91.adam.snookercounter.logic.dialogs.NextFrameDialog;
 import com.konieczny91.adam.snookercounter.logic.Player;
 import com.konieczny91.adam.snookercounter.logic.RedBall;
 
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.BLACK;
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.NO_COLOR;
 
-public class FrameActivity extends AppCompatActivity implements View.OnClickListener, FoulDialog.FoulDialogListener, NextFrameDialog.NextFrameListener{
+public class FrameActivity extends AppCompatActivity implements
+        View.OnClickListener,
+        FoulDialog.FoulDialogListener,
+        NextFrameDialog.NextFrameListener,
+        EndMatchDialog.EndMatchDialogListener
+
+{
 
 
     int reds;
@@ -211,6 +219,11 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
+    }
+
+    @Override
+    public void onFinishEndMatchDialog() {
+        finish();
     }
 
     @Override
@@ -510,7 +523,6 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
                     nextFrame();
                 }
 
-
         }
         positionAfterNoMoreReds++;
 
@@ -520,30 +532,40 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
     }
     private void nextFrame()
     {
-        int result = 0;
+        Enums.winState result;
         NextFrameDialog dialog = null;
+        EndMatchDialog dialogEnd = null;
 
         /* if player pushed miss button (next button) than set new frame */
 
             playerOneStarts = !playerOneStarts;
             FragmentManager manager = getSupportFragmentManager();
 
-            result = gamePlayers.frameWin();
+            result = gamePlayers.frameWin(frames);
 
-            if(result==1)
+            if(result== Enums.winState.PLAYER_ONE_WIN_FRAME)
             {
                 dialog = NextFrameDialog.newInstance(playerOneFN,playerOneLN);
             }
-            else if (result==2)
+            else if (result== Enums.winState.PLAYER_TWO_WIN_FRAME)
             {
                 dialog = NextFrameDialog.newInstance(playerTwoFN,playerTwoLN);
             }
-            else if (result==3)
+            else if (result== Enums.winState.PLAYERS_DRAW)
             {
                 dialog = NextFrameDialog.newInstance();
             }
+            else if (result == Enums.winState.PLAYER_ONE_WIN_MATCH)
+            {
+                dialogEnd = EndMatchDialog.newInstance(playerOneFN,playerOneLN);
+            }
+            else if (result == Enums.winState.PLAYER_TWO_WIN_MATCH)
+            {
+                dialogEnd = EndMatchDialog.newInstance(playerTwoFN,playerTwoLN);
+            }
 
-            dialog.show(manager,"nextFrameDialog");
+            if(dialog != null)  dialog.show(manager,"nextFrameDialog");
+            if(dialogEnd !=null) dialogEnd.show(manager,"endFrameDialog");
 
     }
 
@@ -599,8 +621,8 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
     private void setFrame()
     {
         positionAfterNoMoreReds = 0;
-        playerOneView.setText(playerOne.getFirstName() + " " + playerOne.getLastName().substring(0,1) + "." );
-        playerTwoView.setText(playerTwo.getFirstName() + " " + playerTwo.getLastName().substring(0,1) + "." );
+        playerOneView.setText(playerOne.getFirstName().substring(0,1) + "." + playerOne.getLastName().substring(0,1));
+        playerTwoView.setText(playerTwo.getFirstName().substring(0,1) + "." + playerTwo.getLastName().substring(0,1));
         framesCountView.setText("( "+String.valueOf(frames)+" )");
         playerOneFramesView.setText(String.valueOf(playerOne.getFrames()));
         playerTwoFramesView.setText(String.valueOf(playerTwo.getFrames()));
@@ -781,5 +803,9 @@ public class FrameActivity extends AppCompatActivity implements View.OnClickList
     { toggleColorButtons(true);
         redButton.setEnabled(false);
         redButton.setImageResource(R.drawable.disabledball);}
+
+
+    /* TODO  make logic for drawing the frame and the match -> respotted black    */
+
 
 }

@@ -20,5 +20,16 @@ public  class Enums {
     }
 
 
+    public enum winState
+    {
+        NO_INFO,
+        PLAYER_ONE_WIN_FRAME,
+        PLAYER_TWO_WIN_FRAME,
+        PLAYERS_DRAW,
+        PLAYER_ONE_WIN_MATCH,
+        PLAYER_TWO_WIN_MATCH
+    }
+
+
 
 }
