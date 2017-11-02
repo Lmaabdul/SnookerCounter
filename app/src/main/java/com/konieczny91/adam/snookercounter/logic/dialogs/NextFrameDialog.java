@@ -55,8 +55,8 @@ public class NextFrameDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.dialog_next_frame,container,false);
-        getDialog().setCancelable(false);
         getDialog().requestWindowFeature(STYLE_NO_TITLE);
+        setCancelable(false);
 
 
         Typeface retro = Typeface.createFromAsset(getContext().getAssets(), "fonts/8-BIT WONDER.ttf");

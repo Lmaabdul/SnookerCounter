@@ -49,8 +49,8 @@ public class EndMatchDialog extends DialogFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.dialog_end_match,container,false);
-        getDialog().setCancelable(false);
         getDialog().requestWindowFeature(STYLE_NO_TITLE);
+        setCancelable(false);
 
         String playerName;
         String playerLastName;

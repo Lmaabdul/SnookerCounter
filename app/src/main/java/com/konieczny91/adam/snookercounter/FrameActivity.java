@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,15 +20,25 @@ import com.konieczny91.adam.snookercounter.logic.ColorBalls;
 import com.konieczny91.adam.snookercounter.logic.Enums;
 import com.konieczny91.adam.snookercounter.logic.Enums.colors;
 import com.konieczny91.adam.snookercounter.logic.Foul;
+import com.konieczny91.adam.snookercounter.logic.GamePlayers;
+import com.konieczny91.adam.snookercounter.logic.Player;
+import com.konieczny91.adam.snookercounter.logic.Record;
+import com.konieczny91.adam.snookercounter.logic.RecordAdapter;
+import com.konieczny91.adam.snookercounter.logic.RedBall;
 import com.konieczny91.adam.snookercounter.logic.dialogs.EndMatchDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.FoulDialog;
-import com.konieczny91.adam.snookercounter.logic.GamePlayers;
 import com.konieczny91.adam.snookercounter.logic.dialogs.NextFrameDialog;
-import com.konieczny91.adam.snookercounter.logic.Player;
-import com.konieczny91.adam.snookercounter.logic.RedBall;
+
+import java.util.ArrayList;
 
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.BLACK;
+import static com.konieczny91.adam.snookercounter.logic.Enums.colors.BLUE;
+import static com.konieczny91.adam.snookercounter.logic.Enums.colors.BROWN;
+import static com.konieczny91.adam.snookercounter.logic.Enums.colors.GREEN;
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.NO_COLOR;
+import static com.konieczny91.adam.snookercounter.logic.Enums.colors.PINK;
+import static com.konieczny91.adam.snookercounter.logic.Enums.colors.RED;
+import static com.konieczny91.adam.snookercounter.logic.Enums.colors.YELLOW;
 
 public class FrameActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -73,6 +84,11 @@ public class FrameActivity extends AppCompatActivity implements
     RedBall redBall;
     ColorBalls colorBalls;
     Balls balls;
+
+    ArrayList<Record> records;
+    RecordAdapter recordAdapter;
+    ListView listView;
+    ArrayList<Integer> imageArray;
 
     GamePlayers gamePlayers;
     Player playerOne;
@@ -199,6 +215,7 @@ public class FrameActivity extends AppCompatActivity implements
                 remainingPointsView.setText(String.valueOf(balls.calculateRemainingPointsAllBalls(colorBalls.getColorPoints(BLACK))));
             }
             redBall.setPotted(false);
+            newRecord();
         }
 
         if (freeBall)
@@ -216,6 +233,7 @@ public class FrameActivity extends AppCompatActivity implements
             /* turn colors button on */
             redBall.setPotted(true);
             isFreeBall = true;
+            newRecord();
         }
 
 
@@ -236,6 +254,7 @@ public class FrameActivity extends AppCompatActivity implements
     public void onClick(View v)
     {
         colorBalls.setCurrentColor(NO_COLOR);
+        currentColorPotted = NO_COLOR;
 
         switch (v.getId())
         {
@@ -243,36 +262,43 @@ public class FrameActivity extends AppCompatActivity implements
 
                 currentScoredPoints = gamePlayers.addScore(redBall.getPoints());
                 redBall.redBallPotted();
+                currentColorPotted = RED;
                 break;
 
             case R.id.yellow_ball_button:
 
-                colorBalls.setCurrentColor(colors.YELLOW);
+                colorBalls.setCurrentColor(YELLOW);
+                currentColorPotted = YELLOW;
                 break;
 
             case R.id.green_ball_button:
 
-                colorBalls.setCurrentColor(colors.GREEN);
+                colorBalls.setCurrentColor(GREEN);
+                currentColorPotted = GREEN;
                 break;
 
             case R.id.brown_ball_button:
 
-                colorBalls.setCurrentColor(colors.BROWN);
+                colorBalls.setCurrentColor(BROWN);
+                currentColorPotted = BROWN;
                 break;
 
             case R.id.blue_ball_button:
 
-                colorBalls.setCurrentColor(colors.BLUE);
+                colorBalls.setCurrentColor(BLUE);
+                currentColorPotted = BLUE;
                 break;
 
             case R.id.pink_ball_button:
 
-                colorBalls.setCurrentColor(colors.PINK);
+                colorBalls.setCurrentColor(PINK);
+                currentColorPotted = PINK;
                 break;
 
             case R.id.black_ball_button:
 
                 colorBalls.setCurrentColor(BLACK);
+                currentColorPotted = BLACK;
                 break;
 
             case R.id.miss_button:
@@ -282,6 +308,7 @@ public class FrameActivity extends AppCompatActivity implements
                 {
                     break;
                 }
+
 
                 /* clear current score points do not update score with points before */
                 currentScoredPoints = 0;
@@ -303,6 +330,10 @@ public class FrameActivity extends AppCompatActivity implements
                 gamePlayers.changePlayer();
                 gamePlayers.setPlayerMissed(true);
                 redBall.setPotted(false);
+
+
+                newRecord();
+
                 break;
 
             case R.id.foul_button:
@@ -334,7 +365,13 @@ public class FrameActivity extends AppCompatActivity implements
             redBall.setPotted(false);
         }
 
+
         updateRemainingPoints();
+
+        if(!gamePlayers.isPlayerMissed())
+        {
+            updateRecord();
+        }
 
         /* update UI section */
         if (redBall.noMoreRedBalls() && colorBalls.isLastColorChoosed())
@@ -345,9 +382,6 @@ public class FrameActivity extends AppCompatActivity implements
         {
             updateUIAllBalls(v);
         }
-
-
-
     }
 
     private void updateRemainingPoints()
@@ -375,6 +409,78 @@ public class FrameActivity extends AppCompatActivity implements
         }
     }
 
+    private void updateRecord()
+    {
+        int imageId = -1;
+
+        switch (currentColorPotted)
+        {
+            case RED:
+                imageId = R.drawable.redball;
+                break;
+            case YELLOW:
+                imageId = R.drawable.yellowball;
+                break;
+            case GREEN:
+                imageId = R.drawable.greenball;
+                break;
+            case BROWN:
+                imageId = R.drawable.brownball;
+                break;
+            case BLUE:
+                imageId = R.drawable.blueball;
+                break;
+            case PINK:
+                imageId = R.drawable.pinkball;
+                break;
+            case BLACK:
+                imageId = R.drawable.blackball;
+                break;
+            case NO_COLOR:
+                imageId = -1;
+        }
+
+        if(imageId != -1)
+        {
+            records.get(records.size()-1).addImage(imageId);
+        }
+
+        records.get(records.size()-1).addPointsToBreak(currentScoredPoints);
+        recordAdapter.notifyDataSetChanged();
+
+        //scroll list view to see new records
+       listView.post(new Runnable() {
+            @Override
+            public void run() {
+                listView.setSelection(recordAdapter.getCount()-1);
+            }
+        });
+    }
+
+    private void newRecord()
+    {
+      //  records.add(new Record(gamePlayers.getFirstName(),gamePlayers.getLastName()));
+        recordAdapter.add(new Record(gamePlayers.getFirstName(),gamePlayers.getLastName()));
+        recordAdapter.notifyDataSetChanged();
+
+        //scroll list view to see new records
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                listView.setSelection(recordAdapter.getCount()-1);
+            }
+        });
+    }
+
+    private void initRecord()
+    {
+        records = new ArrayList<>();
+        records.add(new Record(gamePlayers.getFirstName(),gamePlayers.getLastName()));
+        recordAdapter = new RecordAdapter(this,records);
+        listView = (ListView) findViewById(R.id.break_list_view);
+        recordAdapter.setNotifyOnChange(true);
+        listView.setAdapter(recordAdapter);
+    }
 
     private void updateUIAllBalls(View v)
     {
@@ -748,6 +854,7 @@ public class FrameActivity extends AppCompatActivity implements
                 playerOneStarts = true;
                 dialog.dismiss();
                 setFrame();
+                initRecord();
             }
         });
 
@@ -757,6 +864,7 @@ public class FrameActivity extends AppCompatActivity implements
                 playerOneStarts = false;
                 dialog.dismiss();
                 setFrame();
+                initRecord();
             }
         });
 

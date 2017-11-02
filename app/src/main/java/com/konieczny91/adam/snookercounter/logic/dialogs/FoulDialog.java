@@ -192,7 +192,7 @@ public class FoulDialog extends DialogFragment implements View.OnClickListener{
 
         View view = inflater.inflate(R.layout.dialog_foul,container,false);
         getDialog().requestWindowFeature(STYLE_NO_TITLE);
-        getDialog().setCancelable(false);
+        setCancelable(false);
 
         maxReds = getArguments().getInt("maxReds");
 
