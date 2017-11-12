@@ -3,42 +3,48 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="32dp"
+    android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
 
     <TextView
         android:id="@+id/list_item_text"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:textAlignment="center"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
         android:gravity="center"
+        android:textAlignment="center"
         tools:text="A.K"
 
         />
 
     <LinearLayout
         android:id="@+id/list_item_image_container"
-        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="32dp"
-        android:padding="5dp">
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
+        <LinearLayout
+            android:id="@+id/list_item_image_row_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-
-
-
-
+        </LinearLayout>
 
     </LinearLayout>
 
+
     <TextView
         android:id="@+id/list_item_break"
-        android:layout_width="64dp"
-        android:layout_height="32dp"
+        android:layout_width="42dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         tools:text="147"
+        android:textAppearance="?android:textAppearanceSmall"
         android:textAlignment="center"
         android:gravity="center"/>
 

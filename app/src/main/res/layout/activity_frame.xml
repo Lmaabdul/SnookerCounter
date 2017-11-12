@@ -14,7 +14,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/score_layout"
         android:layout_above="@+id/button_row1_layout"
-        android:paddingBottom="16dp">
+        android:paddingBottom="32dp"
+        android:paddingTop="32dp">
 
         <ListView
             android:layout_width="match_parent"

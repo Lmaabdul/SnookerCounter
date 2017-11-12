@@ -61,7 +61,7 @@ public class GamePlayers {
         }
 
 
-        if(one.getFrames()+two.getFrames()== maxFrames)
+        if(one.getFrames()+two.getFrames()== maxFrames || one.getFrames()>(float)maxFrames/2.0f || two.getFrames()>(float)maxFrames/2.0f)
         {
             if(result == Enums.winState.PLAYER_ONE_WIN_FRAME)
             {

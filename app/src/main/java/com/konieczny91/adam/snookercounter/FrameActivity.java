@@ -101,6 +101,7 @@ public class FrameActivity extends AppCompatActivity implements
     int clickCounter = 0;
 
 
+    boolean freeBallRedPottedUpdateRecord = false;
     boolean playerOneStarts = false;
     boolean isFreeBall = false;
 
@@ -240,14 +241,15 @@ public class FrameActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFinishEndMatchDialog() {
+    public void onFinishEndMatchDialog()
+    {
         finish();
     }
 
     @Override
     public void onFinishNextFrameDialog()
     {
-        setFrame();
+     //   setFrame();
     }
 
     @Override
@@ -442,6 +444,15 @@ public class FrameActivity extends AppCompatActivity implements
 
         if(imageId != -1)
         {
+            if(isFreeBall && !freeBallRedPottedUpdateRecord)
+            {
+                imageId = R.drawable.redball;
+                freeBallRedPottedUpdateRecord = true;
+            }
+            else
+            {
+                freeBallRedPottedUpdateRecord = false;
+            }
             records.get(records.size()-1).addImage(imageId);
         }
 
@@ -474,6 +485,10 @@ public class FrameActivity extends AppCompatActivity implements
 
     private void initRecord()
     {
+        if(records!=null)
+        {
+            records.clear();
+        }
         records = new ArrayList<>();
         records.add(new Record(gamePlayers.getFirstName(),gamePlayers.getLastName()));
         recordAdapter = new RecordAdapter(this,records);
@@ -621,13 +636,17 @@ public class FrameActivity extends AppCompatActivity implements
                 foulButton.setEnabled(false);
                 moreButton.setEnabled(false);
                 gamePlayers.setNextFrame(true);
+                nextFrameDialog();
                 break;
             case 7:
                 //Next frame logic is here
                 if(gamePlayers.isNextFrame() && currentButton == R.id.miss_button)
                 {
-                    nextFrame();
+                   setFrame();
                 }
+                gamePlayers.setPlayerMissed(false);
+                isFreeBall = false;
+                return;
 
         }
         positionAfterNoMoreReds++;
@@ -636,7 +655,8 @@ public class FrameActivity extends AppCompatActivity implements
         gamePlayers.setPlayerMissed(false);
         isFreeBall = false;
     }
-    private void nextFrame()
+
+    private void nextFrameDialog()
     {
         Enums.winState result;
         NextFrameDialog dialog = null;
@@ -775,6 +795,9 @@ public class FrameActivity extends AppCompatActivity implements
             redButton.setImageResource(R.drawable.redselector);
             toggleColorButtons(false);
         }
+
+        initRecord();
+
     }
 
     private void initViews()
@@ -854,7 +877,6 @@ public class FrameActivity extends AppCompatActivity implements
                 playerOneStarts = true;
                 dialog.dismiss();
                 setFrame();
-                initRecord();
             }
         });
 
@@ -864,7 +886,6 @@ public class FrameActivity extends AppCompatActivity implements
                 playerOneStarts = false;
                 dialog.dismiss();
                 setFrame();
-                initRecord();
             }
         });
 
@@ -888,6 +909,7 @@ public class FrameActivity extends AppCompatActivity implements
             playerOneView.setTextColor(ContextCompat.getColor(this,R.color.buttonBackgroundColor));
         }
     }
+
     private void onlyColorsOnTable()
     {
         if (gamePlayers.isPlayerMissed()) return;
@@ -911,9 +933,5 @@ public class FrameActivity extends AppCompatActivity implements
     { toggleColorButtons(true);
         redButton.setEnabled(false);
         redButton.setImageResource(R.drawable.disabledball);}
-
-
-    /* TODO  make logic for drawing the frame and the match -> respotted black    */
-
 
 }
