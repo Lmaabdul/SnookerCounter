@@ -5,7 +5,6 @@
 <RelativeLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceSmall"
+                style="@style/textStyleMedium"
                 tools:text="Select Player One" />
 
             <TextView
@@ -43,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceSmall"
+                style="@style/textStyleMedium"
 
                 tools:text="Select Player Two"/>
 
@@ -56,6 +55,7 @@
             android:orientation="horizontal">
 
             <Spinner
+                style="@style/textStyleMedium"
                 android:id="@+id/select_player_one_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/linearId"
         android:orientation="vertical"
-        android:paddingTop="64dp">
+        android:paddingTop="40dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceSmall"
+                style="@style/textStyleMedium"
 
                 tools:text="Number of frames" />
 
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceSmall"
+                style="@style/textStyleMedium"
                 tools:text="Number of reds"/>
         </LinearLayout>
 
@@ -116,6 +116,7 @@
 
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/frames_number_picker"
+                android:background="@color/buttonBackgroundColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -126,6 +127,7 @@
 
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/reds_number_picker"
+                android:background="@color/buttonBackgroundColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -153,7 +155,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/buttonselector"
             android:layout_marginBottom="16dp"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleMedium"
             tools:text="Create Player" />
 
         <Button
@@ -162,7 +164,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/buttonselector"
             android:layout_marginBottom="16dp"
-            android:textAppearance="?android:textAppearanceMedium"
+            style="@style/textStyleMedium"
             tools:text="Start" />
     </LinearLayout>
 

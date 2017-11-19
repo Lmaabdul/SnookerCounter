@@ -25,8 +25,11 @@ import com.konieczny91.adam.snookercounter.logic.Player;
 import com.konieczny91.adam.snookercounter.logic.Record;
 import com.konieczny91.adam.snookercounter.logic.RecordAdapter;
 import com.konieczny91.adam.snookercounter.logic.RedBall;
+import com.konieczny91.adam.snookercounter.logic.dialogs.ConfirmationDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.EndMatchDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.FoulDialog;
+import com.konieczny91.adam.snookercounter.logic.dialogs.ManyRedsDialog;
+import com.konieczny91.adam.snookercounter.logic.dialogs.MoreDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.NextFrameDialog;
 
 import java.util.ArrayList;
@@ -39,12 +42,19 @@ import static com.konieczny91.adam.snookercounter.logic.Enums.colors.NO_COLOR;
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.PINK;
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.RED;
 import static com.konieczny91.adam.snookercounter.logic.Enums.colors.YELLOW;
+import static com.konieczny91.adam.snookercounter.logic.Enums.moreDialogButtonState;
+import static com.konieczny91.adam.snookercounter.logic.Enums.moreDialogButtonState.EXIT_BUTTON;
+import static com.konieczny91.adam.snookercounter.logic.Enums.moreDialogButtonState.FORFEIT_BUTTON;
+import static com.konieczny91.adam.snookercounter.logic.Enums.moreDialogButtonState.NO_BUTTON;
 
 public class FrameActivity extends AppCompatActivity implements
         View.OnClickListener,
         FoulDialog.FoulDialogListener,
         NextFrameDialog.NextFrameListener,
-        EndMatchDialog.EndMatchDialogListener
+        EndMatchDialog.EndMatchDialogListener,
+        MoreDialog.MoreDialogListener,
+        ConfirmationDialog.ConfirmationDialogListener,
+        ManyRedsDialog.ManyRedsDialogListener
 
 {
 
@@ -60,6 +70,7 @@ public class FrameActivity extends AppCompatActivity implements
     Button missButton;
     Button foulButton;
     Button moreButton;
+    Button safeButton;
 
     ImageButton redButton;
     ImageButton yellowButton;
@@ -95,7 +106,13 @@ public class FrameActivity extends AppCompatActivity implements
     Player playerTwo;
     Foul foul;
 
+
+    FragmentManager manager;
+    //enums
     colors currentColorPotted;
+    moreDialogButtonState moreDialogButtonState = NO_BUTTON;
+
+
     int positionAfterNoMoreReds = 0;
     int currentScoredPoints;
     int clickCounter = 0;
@@ -130,6 +147,7 @@ public class FrameActivity extends AppCompatActivity implements
         }
         initPlayers();
         dialogWhoStarts();
+        manager = getSupportFragmentManager();
     }
 
     @Override
@@ -253,12 +271,109 @@ public class FrameActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onFinishMoreDialog(Enums.moreDialogButtonState buttonClicked)
+    {
+        switch (buttonClicked)
+        {
+            case EXIT_BUTTON:
+
+                ConfirmationDialog confirmationDialogExit = ConfirmationDialog.newInstance(getString(R.string.areYouSureExit));
+                confirmationDialogExit.show(manager,"CONFIRMATION_DIALOG_EXIT");
+                moreDialogButtonState = EXIT_BUTTON;
+                break;
+
+            case FORFEIT_BUTTON:
+
+                ConfirmationDialog confirmationDialogForfeit = ConfirmationDialog.newInstance(getString(R.string.areYouSureForfeit));
+                confirmationDialogForfeit.show(manager,"CONFIRMATION_DIALOG_FORFEIT");
+                moreDialogButtonState = FORFEIT_BUTTON;
+                break;
+
+            case MANY_REDS_BUTTON:
+                ManyRedsDialog dialogManyReds = ManyRedsDialog.newInstance(redBall.getCount());
+                dialogManyReds.show(manager,"manyRedsDialog");
+                break;
+        }
+    }
+
+    @Override
+    public void onFinishConfirmationDialog()
+    {
+        Enums.winState result;
+        EndMatchDialog dialogEnd;
+
+        switch (moreDialogButtonState)
+        {
+            case NO_BUTTON:
+                break;
+
+            case EXIT_BUTTON:
+                finish();
+                break;
+
+            case FORFEIT_BUTTON:
+
+                if(gamePlayers.isPlayerOneTurn())
+                {
+                    playerTwo.frameWin();
+                }
+                else
+                {
+                    playerOne.frameWin();
+                }
+
+                result = gamePlayers.matchWin(frames);
+
+                if (result == Enums.winState.PLAYER_ONE_WIN_MATCH)
+                {
+                    dialogEnd = EndMatchDialog.newInstance(playerOneFN,playerOneLN);
+                    dialogEnd.show(manager,"endFrameDialog");
+                    break;
+                }
+                else if (result == Enums.winState.PLAYER_TWO_WIN_MATCH)
+                {
+                    dialogEnd = EndMatchDialog.newInstance(playerTwoFN,playerTwoLN);
+                    dialogEnd.show(manager,"endFrameDialog");
+                    break;
+                }
+                else
+                {
+                    playerOneStarts = !playerOneStarts;
+                    setFrame();
+                }
+                break;
+
+        }
+    }
+
+    @Override
+    public void onFinishManyRedsDialog(int numberOfRedsPotted)
+    {
+        if(!redBall.isPotted()) 
+        {
+            for (int i = 0; i < numberOfRedsPotted; i++) {
+                clickCounter = 0;
+                currentScoredPoints = gamePlayers.addScore(redBall.getPoints());
+                redBall.redBallPotted();
+                currentColorPotted = RED;
+                //subtrack the color balls points that will never be potted (for all red balls potted - 1)
+                updateUIWhole(R.id.red_ball_button);
+                if (i > 0) balls.subtractRemainingPoints(7);
+            }
+        }else
+        {
+            Toast.makeText(this, "CHEATER!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public void onClick(View v)
     {
         colorBalls.setCurrentColor(NO_COLOR);
         currentColorPotted = NO_COLOR;
+        int viewId = v.getId();
 
-        switch (v.getId())
+        switch (viewId)
         {
             case R.id.red_ball_button:
 
@@ -310,8 +425,6 @@ public class FrameActivity extends AppCompatActivity implements
                 {
                     break;
                 }
-
-
                 /* clear current score points do not update score with points before */
                 currentScoredPoints = 0;
 
@@ -332,8 +445,6 @@ public class FrameActivity extends AppCompatActivity implements
                 gamePlayers.changePlayer();
                 gamePlayers.setPlayerMissed(true);
                 redBall.setPotted(false);
-
-
                 newRecord();
 
                 break;
@@ -341,14 +452,26 @@ public class FrameActivity extends AppCompatActivity implements
             case R.id.foul_button:
 
                 /* show foul dialog */
-                FragmentManager manager = getSupportFragmentManager();
                 FoulDialog dialog = FoulDialog.newInstance(redBall.getCount());
                 dialog.show(manager,"TAG");
+                return;
+
+            case R.id.more_button:
+
+                MoreDialog moreDialog = MoreDialog.newInstance();
+                moreDialog.show(manager,"MORE_DIALOG");
                 return;
         }
 
 
-        /* update the score */
+        updateUIWhole(viewId);
+    }
+
+
+
+    private void updateUIWhole(int viewId)
+    {
+           /* update the score */
 
         if (colorBalls.getCurrentColor()!= colors.NO_COLOR)
         {
@@ -378,11 +501,11 @@ public class FrameActivity extends AppCompatActivity implements
         /* update UI section */
         if (redBall.noMoreRedBalls() && colorBalls.isLastColorChoosed())
         {
-            updateUIOnlyColorBalls(v);
+            updateUIOnlyColorBalls(viewId);
         }
         else
         {
-            updateUIAllBalls(v);
+            updateUIAllBalls(viewId);
         }
     }
 
@@ -497,10 +620,10 @@ public class FrameActivity extends AppCompatActivity implements
         listView.setAdapter(recordAdapter);
     }
 
-    private void updateUIAllBalls(View v)
+    private void updateUIAllBalls(int viewId)
     {
 
-        int currentButton = v.getId();
+        int currentButton = viewId;
 
         /* don't update UI when foul button was pushed */
         if (currentButton == R.id.foul_button) return;
@@ -554,9 +677,9 @@ public class FrameActivity extends AppCompatActivity implements
         gamePlayers.setPlayerMissed(false);
     }
 
-    private void updateUIOnlyColorBalls(View v)
+    private void updateUIOnlyColorBalls(int viewId)
     {
-        int currentButton = v.getId();
+        int currentButton = viewId;
 
         /* don't update UI when foul button was pushed */
         if (currentButton == R.id.foul_button) return;
@@ -665,7 +788,6 @@ public class FrameActivity extends AppCompatActivity implements
         /* if player pushed miss button (next button) than set new frame */
 
             playerOneStarts = !playerOneStarts;
-            FragmentManager manager = getSupportFragmentManager();
 
             result = gamePlayers.frameWin(frames);
 
@@ -742,6 +864,8 @@ public class FrameActivity extends AppCompatActivity implements
         blackButton.setOnClickListener(this);
         missButton.setOnClickListener(this);
         foulButton.setOnClickListener(this);
+        moreButton.setOnClickListener(this);
+        safeButton.setOnClickListener(this);
     }
 
     private void setFrame()
@@ -805,6 +929,7 @@ public class FrameActivity extends AppCompatActivity implements
         missButton = (Button) findViewById(R.id.miss_button);
         foulButton = (Button) findViewById(R.id.foul_button);
         moreButton = (Button) findViewById(R.id.more_button);
+        safeButton = (Button) findViewById(R.id.safe_button);
 
         redButton       = (ImageButton) findViewById(R.id.red_ball_button);
         yellowButton    = (ImageButton) findViewById(R.id.yellow_ball_button);
@@ -832,6 +957,7 @@ public class FrameActivity extends AppCompatActivity implements
         missButton.setTypeface(retroFont);
         foulButton.setTypeface(retroFont);
         moreButton.setTypeface(retroFont);
+        safeButton.setTypeface(retroFont);
         playerOneView.setTypeface(retroFont);
         playerTwoView.setTypeface(retroFont);
         playerOneFramesView.setTypeface(retroFont);

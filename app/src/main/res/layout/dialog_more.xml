@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor"
+    android:gravity="center"
+    android:padding="32dp">
+
+    <Button
+        android:id="@+id/dialog_more_many_reds_button"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="MANY REDS"
+        android:background="@drawable/buttonselector"
+        android:layout_margin="8dp"
+        style="@style/textStyleLarge"
+        />
+
+
+    <Button
+        android:id="@+id/dialog_more_forfeit_button"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="FORFEIT"
+        android:background="@drawable/buttonselector"
+        android:layout_margin="8dp"
+        style="@style/textStyleLarge"
+        />
+
+    <Button
+        android:id="@+id/dialog_more_exit_button"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="EXIT"
+        android:background="@drawable/buttonselector"
+        android:layout_margin="8dp"
+        style="@style/textStyleLarge"
+        />
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

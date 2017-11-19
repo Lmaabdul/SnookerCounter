@@ -23,7 +23,7 @@
             android:background="@drawable/buttonselector"
             android:layout_weight="1"
             android:layout_marginBottom="16dp"
-            android:textAppearance="?android:textAppearanceMedium"
+            style="@style/textStyleLarge"
             tools:text="New Match" />
 
         <Button
@@ -33,7 +33,7 @@
             android:background="@drawable/buttonselector"
             android:layout_weight="1"
             android:layout_marginBottom="16dp"
-            android:textAppearance="?android:textAppearanceMedium"
+            style="@style/textStyleLarge"
             tools:text="Statistics" />
 
         <Button
@@ -43,7 +43,7 @@
             android:background="@drawable/buttonselector"
             android:layout_weight="1"
             android:layout_marginBottom="16dp"
-            android:textAppearance="?android:textAppearanceMedium"
+            style="@style/textStyleLarge"
             tools:text="Exit" />
 
 </LinearLayout>

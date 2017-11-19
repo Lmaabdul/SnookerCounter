@@ -192,7 +192,7 @@ public class FoulDialog extends DialogFragment implements View.OnClickListener{
 
         View view = inflater.inflate(R.layout.dialog_foul,container,false);
         getDialog().requestWindowFeature(STYLE_NO_TITLE);
-        setCancelable(false);
+        setCancelable(true);
 
         maxReds = getArguments().getInt("maxReds");
 
@@ -229,7 +229,9 @@ public class FoulDialog extends DialogFragment implements View.OnClickListener{
         redsNumberText.setText("0");
         redsNumberText.setTypeface(retroFont);
         incrementButton.setText("+");
+        incrementButton.setTypeface(retroFont);
         decrementButton.setText("-");
+        decrementButton.setTypeface(retroFont);
         nextPlayerButton.setText(R.string.nextPlayer);
         repeatFoulButton.setText(R.string.repeatFoul);
         freeballButton.setText(R.string.freeball);

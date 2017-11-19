@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textAlignment="center"
+        style="@style/textStyleMedium"
         tools:text="A.K"
 
         />
@@ -44,7 +45,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         tools:text="147"
-        android:textAppearance="?android:textAppearanceSmall"
+        style="@style/textStyleMedium"
         android:textAlignment="center"
         android:gravity="center"/>
 

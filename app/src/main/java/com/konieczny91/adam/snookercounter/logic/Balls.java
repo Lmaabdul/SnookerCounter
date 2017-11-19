@@ -40,7 +40,7 @@ public class Balls {
             remainingPoints -= colorBalls.getColorPoints(Enums.colors.BLACK);
         }
 
-        /* foul logic used 8 points to subtract from remaining points */
+        /* foul logic used 8 points to subtract from remaining points (red plus color) */
         if(points>=8)
         {
             remainingPoints -= points;
@@ -66,6 +66,11 @@ public class Balls {
         }
 
         return remainingPoints;
+    }
+
+    public void subtractRemainingPoints(int points)
+    {
+        remainingPoints -= points;
     }
 
 }

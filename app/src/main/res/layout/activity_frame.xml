@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:paddingBottom="8dp"
     android:background="@color/backgroundColor"
     >
 
@@ -143,13 +144,24 @@
         android:layout_alignParentBottom="true">
 
         <Button
+            style="@style/textStyleLarge"
             android:text="MISS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/buttonselector"
             android:id="@+id/miss_button"
             android:textAlignment="center"
-            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_margin="2dp"
+            android:layout_weight="1" />
+
+        <Button
+            style="@style/textStyleLarge"
+            android:text="SAFE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonselector"
+            android:id="@+id/safe_button"
+            android:textAlignment="center"
             android:layout_margin="2dp"
             android:layout_weight="1" />
 
@@ -160,7 +172,7 @@
             android:background="@drawable/buttonselector"
             android:id="@+id/foul_button"
             android:textAlignment="center"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleLarge"
             android:layout_margin="2dp"
             android:layout_weight="1" />
 
@@ -171,112 +183,138 @@
             android:background="@drawable/buttonselector"
             android:id="@+id/more_button"
             android:textAlignment="center"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleLarge"
             android:layout_margin="2dp"
             android:layout_weight="1" />
+
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/score_layout"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:id="@+id/score_layout">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/name_and_points_player_one"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_height="wrap_content"
-                tools:text="marcin"
+                android:layout_width="80dp"
+                tools:text="G.1"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceLarge"
+                style="@style/textStyleLarge"
                 android:textColor="@color/black"
                 android:id="@+id/player_one"
-                android:layout_width="80dp" />
+                />
 
             <TextView
                 tools:text="0"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/player_one_frames"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textAppearance="?android:textAppearanceMedium" />
-
-            <TextView
-                tools:text="(0)"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/frames_count"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textAppearance="?android:textAppearanceMedium" />
-
-            <TextView
-                tools:text="0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/player_two_frames"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textAppearance="?android:textAppearanceMedium" />
-
-            <TextView
                 android:layout_width="80dp"
-                tools:text="robert"
-                android:layout_height="wrap_content"
-                android:id="@+id/player_two"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                tools:text="0"
-                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:id="@+id/player_one_score"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:layout_width="30dp" />
+                style="@style/textStyleLarge"
+
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/name_and_points_player_two"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:layout_width="80dp"
+                tools:text="G.2"
+                android:layout_height="wrap_content"
+                android:id="@+id/player_two"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:gravity="center"
+                style="@style/textStyleLarge"/>
+
+            <TextView
+                tools:text="0"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/player_two_score"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                style="@style/textStyleLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <LinearLayout
+                android:id="@+id/frames_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+
+                <TextView
+                    tools:text="0"
+                    android:paddingRight="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player_one_frames"
+                    android:textAlignment="center"
+                    style="@style/textStyleLarge" />
+
+                <TextView
+                    tools:text="(0)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/frames_count"
+                    style="@style/textStyleLarge" />
+
+                <TextView
+                    tools:text="0"
+                    android:paddingLeft="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player_two_frames"
+                    style="@style/textStyleLarge" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
-                    android:lines="2"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textAlignment="center"
-                    android:textAppearance="?android:textAppearanceSmall"
+                    style="@style/textStyleLarge"
+                    tools:text="REMAINING POINTS"
                     android:id="@+id/remaining_points_text" />
 
                 <TextView
@@ -284,25 +322,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/remaining_points"
-                    android:gravity="center"
                     android:textColor="@color/black"
                     android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textAppearance="?android:textAppearanceSmall" />
+                    style="@style/textStyleLarge" />
             </LinearLayout>
 
-            <TextView
-                tools:text="0"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:id="@+id/player_two_score"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceMedium" />
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

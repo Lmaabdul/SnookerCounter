@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         tools:text = "Frame won by Guest Player 1"
-        android:textAppearance="?android:textAppearanceMedium"
+        style="@style/textStyleLarge"
         android:paddingBottom="32dp"
         android:maxLines="2"
         />
@@ -26,7 +26,7 @@
         android:padding="16dp"
         android:layout_marginBottom="4dp"
         tools:text="continue"
-        android:textAppearance="?android:textAppearanceMedium"
+        style="@style/textStyleLarge"
         android:background="@drawable/buttonselector"/>
 
 </LinearLayout>

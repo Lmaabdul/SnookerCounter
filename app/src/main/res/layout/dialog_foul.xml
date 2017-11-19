@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             tools:text="Pick Foul Ball"
             android:textAlignment="center"
-            android:textAppearance="?android:textAppearanceLarge"
+            style="@style/textStyleLarge"
             android:paddingBottom="16dp"/>
 
     </LinearLayout>
@@ -164,7 +164,7 @@
             android:id="@+id/reds_info_foul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleMedium"
             android:textAlignment="center"
             tools:text="Number of reds if potted/out of the table"
             android:paddingBottom="16dp"/>
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttonselector"
                 android:text="-"
-                android:textSize="32dp"
+                style="@style/textStyleLarge"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="16dp"/>
@@ -194,7 +194,7 @@
                 tools:text="0"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
-                android:textAppearance="?android:textAppearanceLarge"
+                style="@style/textStyleLarge"
                 android:textAlignment="center"
                 android:layout_weight="1"/>
 
@@ -202,7 +202,7 @@
                 android:id="@+id/increment_button_foul"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="32dp"
+                style="@style/textStyleLarge"
                 android:background="@drawable/buttonselector"
                 android:text="+"
                 android:layout_weight="1"
@@ -227,7 +227,7 @@
             android:layout_height="wrap_content"
             tools:text="Player turn"
             android:textAlignment="center"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleMedium"
             android:paddingBottom="16dp"/>
 
     </LinearLayout>
@@ -246,7 +246,7 @@
             tools:text="NEXT PLAYER"
             android:layout_marginRight="2dp"
             android:background="@drawable/buttonselector"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleMedium"
             android:layout_marginBottom="4dp"
             />
 
@@ -258,7 +258,7 @@
             tools:text="FREEBAL"
             android:layout_marginLeft="2dp"
             android:background="@drawable/buttonselector"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleMedium"
             android:layout_marginBottom="4dp"/>
 
 
@@ -270,7 +270,7 @@
             tools:text="REPEAT FOUL"
             android:layout_marginLeft="2dp"
             android:background="@drawable/buttonselector"
-            android:textAppearance="?android:textAppearanceSmall"
+            style="@style/textStyleMedium"
             android:layout_marginBottom="4dp"/>
 
 

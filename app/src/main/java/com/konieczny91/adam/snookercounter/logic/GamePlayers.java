@@ -78,6 +78,24 @@ public class GamePlayers {
 
     }
 
+    public Enums.winState matchWin(int maxFrames)
+    {
+        Enums.winState result= Enums.winState.NO_INFO;
+
+        if(one.getFrames()+two.getFrames()== maxFrames || one.getFrames()>(float)maxFrames/2.0f || two.getFrames()>(float)maxFrames/2.0f)
+        {
+            if (one.getFrames() > two.getFrames()) {
+                result = Enums.winState.PLAYER_ONE_WIN_MATCH;
+            } else if (one.getFrames() < two.getFrames()) {
+                result = Enums.winState.PLAYER_TWO_WIN_MATCH;
+            } else {
+                result = Enums.winState.NO_INFO;
+            }
+        }
+
+        return result;
+    }
+
 
     public int getScore()
     {
@@ -132,6 +150,8 @@ public class GamePlayers {
             return two.getLastName();
         }
     }
+
+
 
     public boolean isPlayerMissed() {
         return playerMissed;

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="@color/backgroundColor">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialog_many_reds_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textStyleMedium"
+            android:textAlignment="center"
+            tools:text="Number of reds if potted/out of the table"
+            android:paddingBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/dialog_many_decrement_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonselector"
+                android:text="-"
+                style="@style/textStyleLarge"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="16dp"/>
+
+            <TextView
+                android:id="@+id/dialog_many_reds_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="0"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                style="@style/textStyleLarge"
+                android:textAlignment="center"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/dialog_many_increment_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/textStyleLarge"
+                android:background="@drawable/buttonselector"
+                android:text="+"
+                android:layout_weight="1"
+                android:layout_marginRight="16dp"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="16dp">
+
+            <Button
+                android:id="@+id/dialog_many_reds_ok_button"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="OK"
+                style="@style/textStyleMedium"
+                android:background="@drawable/buttonselector"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                />
+
+
+            <Button
+                android:id="@+id/dialog_many_reds_cancel_button"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="cancel"
+                style="@style/textStyleMedium"
+                android:background="@drawable/buttonselector"
+                android:layout_marginLeft="4dp" />
+
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+
+</LinearLayout>
