@@ -22,6 +22,7 @@ public class MoreDialog extends DialogFragment implements View.OnClickListener
     Button manyRedsButton;
     Button forfeitButton;
     Button exitButton;
+    Button undoButton;
     Typeface retroFont;
     MoreDialogListener listener;
 
@@ -52,6 +53,12 @@ public class MoreDialog extends DialogFragment implements View.OnClickListener
         setCancelable(true);
 
         retroFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/8-BIT WONDER.ttf");
+
+
+        undoButton = (Button) view.findViewById(R.id.dialog_more_undo_button);
+        undoButton.setTypeface(retroFont);
+        undoButton.setText(getString(R.string.undo));
+        undoButton.setOnClickListener(this);
 
         exitButton = (Button) view.findViewById(R.id.dialog_more_exit_button);
         exitButton.setTypeface(retroFont);
@@ -95,6 +102,11 @@ public class MoreDialog extends DialogFragment implements View.OnClickListener
                 listener.onFinishMoreDialog(buttonClicked);
                 dismiss();
                 break;
+
+            case R.id.dialog_more_undo_button:
+                buttonClicked = Enums.moreDialogButtonState.UNDO_BUTTON;
+                listener.onFinishMoreDialog(buttonClicked);
+                dismiss();
         }
     }
 }

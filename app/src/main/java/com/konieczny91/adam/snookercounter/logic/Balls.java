@@ -73,4 +73,11 @@ public class Balls {
         remainingPoints -= points;
     }
 
+    public int getRemainingPoints() {
+        return remainingPoints;
+    }
+
+    public void setRemainingPoints(int remainingPoints) {
+        this.remainingPoints = remainingPoints;
+    }
 }

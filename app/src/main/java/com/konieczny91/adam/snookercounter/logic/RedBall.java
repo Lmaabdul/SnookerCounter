@@ -37,6 +37,10 @@ public class RedBall {
         isPotted = true;
 
     }
+    public void undoRedBallPotted()
+    {
+        count+=1;
+    }
 
     public boolean noMoreRedBalls()
     {

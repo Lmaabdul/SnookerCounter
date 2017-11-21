@@ -46,6 +46,20 @@ public class Record
         return imageArray.get(index);
     }
 
+    public void clearImageArray()
+    {
+        imageArray.clear();
+    }
+    public ArrayList<Integer> getImageArray()
+    {
+        return imageArray;
+    }
+
+    public void swapImageArray(ArrayList<Integer> imageArray)
+    {
+        this.imageArray = new ArrayList<>(imageArray);
+    }
+
 
     public int getImageArraySize()
     {
@@ -54,6 +68,10 @@ public class Record
 
     public int getBreakScore() {
         return breakScore;
+    }
+
+    public void setBreakScore(int breakScore) {
+        this.breakScore = breakScore;
     }
 
     @Override

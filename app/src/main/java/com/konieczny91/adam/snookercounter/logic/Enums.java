@@ -33,6 +33,7 @@ public  class Enums {
 
     public enum moreDialogButtonState
     {
+        UNDO_BUTTON,
         EXIT_BUTTON,
         FORFEIT_BUTTON,
         MANY_REDS_BUTTON,

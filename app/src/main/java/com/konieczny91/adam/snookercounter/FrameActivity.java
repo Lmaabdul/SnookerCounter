@@ -31,6 +31,7 @@ import com.konieczny91.adam.snookercounter.logic.dialogs.FoulDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.ManyRedsDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.MoreDialog;
 import com.konieczny91.adam.snookercounter.logic.dialogs.NextFrameDialog;
+import com.konieczny91.adam.snookercounter.logic.dialogs.PreviousUiState;
 
 import java.util.ArrayList;
 
@@ -99,12 +100,13 @@ public class FrameActivity extends AppCompatActivity implements
     ArrayList<Record> records;
     RecordAdapter recordAdapter;
     ListView listView;
-    ArrayList<Integer> imageArray;
+
 
     GamePlayers gamePlayers;
     Player playerOne;
     Player playerTwo;
     Foul foul;
+    PreviousUiState previousUiState;
 
 
     FragmentManager manager;
@@ -121,6 +123,7 @@ public class FrameActivity extends AppCompatActivity implements
     boolean freeBallRedPottedUpdateRecord = false;
     boolean playerOneStarts = false;
     boolean isFreeBall = false;
+    boolean undoBlockFlag = true;
 
 
     @Override
@@ -280,6 +283,7 @@ public class FrameActivity extends AppCompatActivity implements
                 ConfirmationDialog confirmationDialogExit = ConfirmationDialog.newInstance(getString(R.string.areYouSureExit));
                 confirmationDialogExit.show(manager,"CONFIRMATION_DIALOG_EXIT");
                 moreDialogButtonState = EXIT_BUTTON;
+                undoBlockFlag = true;
                 break;
 
             case FORFEIT_BUTTON:
@@ -287,12 +291,106 @@ public class FrameActivity extends AppCompatActivity implements
                 ConfirmationDialog confirmationDialogForfeit = ConfirmationDialog.newInstance(getString(R.string.areYouSureForfeit));
                 confirmationDialogForfeit.show(manager,"CONFIRMATION_DIALOG_FORFEIT");
                 moreDialogButtonState = FORFEIT_BUTTON;
+                undoBlockFlag = true;
                 break;
 
             case MANY_REDS_BUTTON:
                 ManyRedsDialog dialogManyReds = ManyRedsDialog.newInstance(redBall.getCount());
                 dialogManyReds.show(manager,"manyRedsDialog");
+                undoBlockFlag = true;
                 break;
+
+            case UNDO_BUTTON:
+
+                if(undoBlockFlag)
+                {
+                    Toast.makeText(this, "CAN'T UNDO", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Toast.makeText(this, "UNDO", Toast.LENGTH_SHORT).show();
+                playerOne.setScore(previousUiState.getPrevPlayerOneScore());
+                playerTwo.setScore(previousUiState.getPrevPlayerTwoScore());
+                balls.setRemainingPoints(previousUiState.getPrevRemainingPoints());
+
+                if(previousUiState.getPrevButtonID() == R.id.miss_button)
+                {
+                    records.remove(getLastRecord());
+                    gamePlayers.changePlayer();
+                    changePlayersUI();
+                    recordAdapter.notifyDataSetChanged();
+                    return;
+                }
+                getLastRecord().swapImageArray(previousUiState.getPreviousImagesArray());
+                getLastRecord().setBreakScore(previousUiState.getPrevBreakScore());
+                recordAdapter.notifyDataSetChanged();
+
+                playerOneScoreView.setText(String.valueOf(playerOne.getScore()));
+                playerTwoScoreView.setText(String.valueOf(playerTwo.getScore()));
+                remainingPointsView.setText(String.valueOf(balls.getRemainingPoints()));
+
+                positionAfterNoMoreReds = previousUiState.getPrevPositionAfterNoMoreReds();
+
+                if(previousUiState.getPrevButtonID() == R.id.red_ball_button)
+                {
+                    turnRedOn();
+                    redBall.undoRedBallPotted();
+                    redBall.setPotted(false);
+                    if(!redBall.noMoreRedBalls())  colorBalls.setLastColorChoosed(false);
+                }
+                else
+                {
+
+                    if (redBall.noMoreRedBalls() && colorBalls.isLastColorChoosed()&& positionAfterNoMoreReds>=1)
+                    {
+                        toggleColorButtons(false);
+                        switch (--positionAfterNoMoreReds) {
+                            case 0:
+                                yellowButton.setEnabled(true);
+                                yellowButton.setImageResource(R.drawable.yellowselector);
+                                break;
+                            case 1:
+                                greenButton.setEnabled(true);
+                                greenButton.setImageResource(R.drawable.greenselector);
+                                break;
+                            case 2:
+                                brownButton.setEnabled(true);
+                                brownButton.setImageResource(R.drawable.brownselector);
+                                break;
+                            case 3:
+                                blueButton.setEnabled(true);
+                                blueButton.setImageResource(R.drawable.blueselector);
+                                break;
+                            case 4:
+                                pinkButton.setEnabled(true);
+                                pinkButton.setImageResource(R.drawable.pinkselector);
+                                break;
+                            case 5:
+                                blackButton.setEnabled(true);
+                                blackButton.setImageResource(R.drawable.blackselector);
+                                break;
+                        }
+                        positionAfterNoMoreReds++;
+                    }
+                    else
+                    {
+                        if(!redBall.noMoreRedBalls())
+                        {
+                            colorBalls.setLastColorChoosed(false);
+                        }
+                        else
+                        {
+                            colorBalls.setLastColorChoosed(true);
+                        }
+                        turnColorsOn();
+                    }
+
+                }
+
+
+
+
+
         }
     }
 
@@ -362,7 +460,7 @@ public class FrameActivity extends AppCompatActivity implements
             }
         }else
         {
-            Toast.makeText(this, "CHEATER!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "nope", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -373,6 +471,17 @@ public class FrameActivity extends AppCompatActivity implements
         currentColorPotted = NO_COLOR;
         int viewId = v.getId();
 
+        if(viewId != R.id.more_button)
+        {
+            previousUiState = new PreviousUiState
+                    (positionAfterNoMoreReds,
+                            getLastRecord().getBreakScore(),
+                            viewId, getLastRecord().getImageArray(),
+                            playerOne.getScore(),
+                            playerTwo.getScore(),
+                            balls.getRemainingPoints());
+        }
+
         switch (viewId)
         {
             case R.id.red_ball_button:
@@ -380,42 +489,49 @@ public class FrameActivity extends AppCompatActivity implements
                 currentScoredPoints = gamePlayers.addScore(redBall.getPoints());
                 redBall.redBallPotted();
                 currentColorPotted = RED;
+                undoBlockFlag = false;
                 break;
 
             case R.id.yellow_ball_button:
 
                 colorBalls.setCurrentColor(YELLOW);
                 currentColorPotted = YELLOW;
+                undoBlockFlag = false;
                 break;
 
             case R.id.green_ball_button:
 
                 colorBalls.setCurrentColor(GREEN);
                 currentColorPotted = GREEN;
+                undoBlockFlag = false;
                 break;
 
             case R.id.brown_ball_button:
 
                 colorBalls.setCurrentColor(BROWN);
                 currentColorPotted = BROWN;
+                undoBlockFlag = false;
                 break;
 
             case R.id.blue_ball_button:
 
                 colorBalls.setCurrentColor(BLUE);
                 currentColorPotted = BLUE;
+                undoBlockFlag = false;
                 break;
 
             case R.id.pink_ball_button:
 
                 colorBalls.setCurrentColor(PINK);
                 currentColorPotted = PINK;
+                undoBlockFlag = false;
                 break;
 
             case R.id.black_ball_button:
 
                 colorBalls.setCurrentColor(BLACK);
                 currentColorPotted = BLACK;
+                undoBlockFlag = false;
                 break;
 
             case R.id.miss_button:
@@ -447,6 +563,8 @@ public class FrameActivity extends AppCompatActivity implements
                 redBall.setPotted(false);
                 newRecord();
 
+                undoBlockFlag = false;
+
                 break;
 
             case R.id.foul_button:
@@ -454,6 +572,7 @@ public class FrameActivity extends AppCompatActivity implements
                 /* show foul dialog */
                 FoulDialog dialog = FoulDialog.newInstance(redBall.getCount());
                 dialog.show(manager,"TAG");
+                undoBlockFlag = true;
                 return;
 
             case R.id.more_button:
@@ -465,9 +584,12 @@ public class FrameActivity extends AppCompatActivity implements
 
 
         updateUIWhole(viewId);
+
+
+
+
+
     }
-
-
 
     private void updateUIWhole(int viewId)
     {
@@ -629,7 +751,7 @@ public class FrameActivity extends AppCompatActivity implements
         if (currentButton == R.id.foul_button) return;
 
         /* update UI when active player is changed */
-        changePlayers();
+        changePlayersUI();
 
         if (redBall.isPotted() && !isFreeBall)
         {
@@ -685,7 +807,7 @@ public class FrameActivity extends AppCompatActivity implements
         if (currentButton == R.id.foul_button) return;
 
         /* update UI when active player is changed */
-        changePlayers();
+        changePlayersUI();
 
         redButton.setEnabled(false);
         redButton.setImageResource(R.drawable.disabledball);
@@ -758,6 +880,7 @@ public class FrameActivity extends AppCompatActivity implements
                 missButton.setText(R.string.next);
                 foulButton.setEnabled(false);
                 moreButton.setEnabled(false);
+                safeButton.setEnabled(false);
                 gamePlayers.setNextFrame(true);
                 nextFrameDialog();
                 break;
@@ -871,6 +994,7 @@ public class FrameActivity extends AppCompatActivity implements
     private void setFrame()
     {
         positionAfterNoMoreReds = 0;
+        undoBlockFlag = true;
         playerOneView.setText(playerOne.getFirstName().substring(0,1) + "." + playerOne.getLastName().substring(0,1));
         playerTwoView.setText(playerTwo.getFirstName().substring(0,1) + "." + playerTwo.getLastName().substring(0,1));
         framesCountView.setText("( "+String.valueOf(frames)+" )");
@@ -889,7 +1013,7 @@ public class FrameActivity extends AppCompatActivity implements
         missButton.setText(R.string.miss);
         foulButton.setEnabled(true);
         moreButton.setEnabled(true);
-
+        safeButton.setEnabled(true);
 
         gamePlayers.setPlayerOneTurn(playerOneStarts);
 
@@ -1018,7 +1142,7 @@ public class FrameActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    private void changePlayers()
+    private void changePlayersUI()
     {
         if (gamePlayers.isPlayerOneTurn())
         {
@@ -1059,5 +1183,10 @@ public class FrameActivity extends AppCompatActivity implements
     { toggleColorButtons(true);
         redButton.setEnabled(false);
         redButton.setImageResource(R.drawable.disabledball);}
+
+    private Record getLastRecord()
+    {
+        return records.get(records.size()-1);
+    }
 
 }

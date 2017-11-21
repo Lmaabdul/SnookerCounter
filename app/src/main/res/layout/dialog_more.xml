@@ -10,6 +10,17 @@
     android:padding="32dp">
 
     <Button
+        android:id="@+id/dialog_more_undo_button"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="Undo"
+        android:background="@drawable/buttonselector"
+        android:layout_margin="8dp"
+        style="@style/textStyleLarge"
+        />
+
+    <Button
         android:id="@+id/dialog_more_many_reds_button"
         android:layout_width="194dp"
         android:layout_height="wrap_content"

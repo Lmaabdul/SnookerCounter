@@ -37,4 +37,5 @@
     <string name="areYouSureForfeit">are you sure you want to forfeit?</string>
     <string name="howManyReds">how many reds was potted?</string>
     <string name="ok">ok</string>
+    <string name="undo">undo</string>
 </resources>
