@@ -112,7 +112,6 @@ public class RecordAdapter extends ArrayAdapter<Record>
 
             //Add ball view to the image container
             imageContainers.get(row-1).addView(ballImage);
-         //   ballImage.setLayoutParams(ballImageParameters);
         }
 
 

@@ -46,10 +46,6 @@ public class Record
         return imageArray.get(index);
     }
 
-    public void clearImageArray()
-    {
-        imageArray.clear();
-    }
     public ArrayList<Integer> getImageArray()
     {
         return imageArray;

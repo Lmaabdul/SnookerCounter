@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:weightSum="100"
+    tools:context="com.konieczny91.adam.snookercounter.SummaryActivity">
+
+
+    <LinearLayout
+        android:id="@+id/summary_win_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="22"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/summary_winner_text_view"
+            style="@style/textStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/winner"
+            android:textAlignment="center"
+            android:paddingBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/summary_winner_name_text_view"
+            style="@style/textStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            tools:text="MARTA MAKIELA"
+            android:paddingBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/summary_frames_text_view"
+            style="@style/textStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            tools:text="7-3" />
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:background="@color/buttonBackgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="63"
+        android:layout_margin="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/summary_players_names"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/playersNames"
+                android:textAlignment="center" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_name"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="M.M" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_name"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="A.K" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_all_shots"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/allShots"
+                android:textAlignment="center" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_all_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="12" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_all_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="14" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_shots_potted"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/shotsPotted"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_potted_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="34" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+
+                <TextView
+                    android:id="@+id/summary_player_two_potted_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_shots_missed"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/shotsMissed"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_missed_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="34" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+
+                <TextView
+                    android:id="@+id/summary_player_two_missed_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_shots_successful_percent"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/shotsSuccessfulPercent"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_successful_shots_percent_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="34%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+
+                <TextView
+                    android:id="@+id/summary_player_two_successful_shots_percent_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_presence_at_the_table"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/presenceAtTheTable"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_presence"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="34%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+
+                <TextView
+                    android:id="@+id/summary_player_two_presence"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_highest_break"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/highestBreak"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/summary_player_one_break_score"
+                        style="@style/textStyleMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        tools:text="147" />
+
+                    <LinearLayout
+                        android:id="@+id/summary_player_one_item_image_container"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/summary_player_two_break_score"
+                        style="@style/textStyleMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        tools:text="100" />
+
+                    <LinearLayout
+                        android:id="@+id/summary_player_two_item_image_container"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_average_break"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/averageBreak"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_average_break"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="34%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+
+                <TextView
+                    android:id="@+id/summary_player_two_average_break"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+
+
+            <TextView
+                android:id="@+id/summary_all_safe_shots"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/allSafeShots"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_all_safe_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_all_safe_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_safe_shots_successful"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/safeSuccessful"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_safe_successful_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_safe_successful_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_safe_shots_failed"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/safeFailed"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_safe_failed_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_safe_failed_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_safe_shots_percent"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/safePercent"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_safe_percent_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_safe_percent_shots_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95%" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+            <TextView
+                android:id="@+id/summary_foul_count"
+                style="@style/textStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/foulCount"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/summary_player_one_foul_count_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonBackgroundColor" />
+
+                <TextView
+                    android:id="@+id/summary_player_two_foul_count_view"
+                    style="@style/textStyleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="95" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/buttonBackgroundColorPressed"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:gravity="center"
+        >
+
+        <Button
+            android:id="@+id/summary_exit_button"
+            style="@style/textStyleMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/buttonselector"
+            android:onClick="exitClick"
+            android:text="@string/exit" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -67,6 +67,11 @@ public class RedBall {
         isPotted = potted;
     }
 
+    public void setNoMoreBalls()
+    {
+        count=0;
+    }
+
 
 
 

@@ -38,4 +38,18 @@
     <string name="howManyReds">how many reds was potted?</string>
     <string name="ok">ok</string>
     <string name="undo">undo</string>
+    <string name="winner">WINNER</string>
+    <string name="playersNames">players names</string>
+    <string name="allShots">all shots attempted</string>
+    <string name="shotsPotted">potted shots</string>
+    <string name="shotsMissed">missed shots</string>
+    <string name="shotsSuccessfulPercent">potted shots %</string>
+    <string name="presenceAtTheTable">presence at the table %</string>
+    <string name="highestBreak">highest break</string>
+    <string name="averageBreak">average break</string>
+    <string name="allSafeShots">all safe shots attempted</string>
+    <string name="safeSuccessful">safe shots successful</string>
+    <string name="safeFailed">safe shots failed</string>
+    <string name="safePercent">safe shots successful %</string>
+    <string name="foulCount">foul count</string>
 </resources>

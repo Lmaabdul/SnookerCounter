@@ -22,6 +22,7 @@ import com.konieczny91.adam.snookercounter.logic.Enums.colors;
 import com.konieczny91.adam.snookercounter.logic.Foul;
 import com.konieczny91.adam.snookercounter.logic.GamePlayers;
 import com.konieczny91.adam.snookercounter.logic.Player;
+import com.konieczny91.adam.snookercounter.logic.PlayerStatistics;
 import com.konieczny91.adam.snookercounter.logic.Record;
 import com.konieczny91.adam.snookercounter.logic.RecordAdapter;
 import com.konieczny91.adam.snookercounter.logic.RedBall;
@@ -98,6 +99,7 @@ public class FrameActivity extends AppCompatActivity implements
     Balls balls;
 
     ArrayList<Record> records;
+    ArrayList<Record> allRecords = new ArrayList<>();
     RecordAdapter recordAdapter;
     ListView listView;
 
@@ -105,6 +107,8 @@ public class FrameActivity extends AppCompatActivity implements
     GamePlayers gamePlayers;
     Player playerOne;
     Player playerTwo;
+    PlayerStatistics playerOneStatistics;
+    PlayerStatistics playerTwoStatistics;
     Foul foul;
     PreviousUiState previousUiState;
 
@@ -124,6 +128,9 @@ public class FrameActivity extends AppCompatActivity implements
     boolean playerOneStarts = false;
     boolean isFreeBall = false;
     boolean undoBlockFlag = true;
+    boolean safeShot = false;
+    boolean endMatch = false;
+    boolean undoMissSafeOnRed = false;
 
 
     @Override
@@ -264,13 +271,25 @@ public class FrameActivity extends AppCompatActivity implements
     @Override
     public void onFinishEndMatchDialog()
     {
-        finish();
+        missButton.setText(R.string.next);
+        foulButton.setEnabled(false);
+        moreButton.setEnabled(false);
+        safeButton.setEnabled(false);
+        gamePlayers.setNextFrame(true);
+        disableBalls();
+        endMatch = true;
     }
 
     @Override
     public void onFinishNextFrameDialog()
     {
-     //   setFrame();
+        missButton.setText(R.string.next);
+        foulButton.setEnabled(false);
+        moreButton.setEnabled(false);
+        safeButton.setEnabled(false);
+        gamePlayers.setNextFrame(true);
+        disableBalls();
+
     }
 
     @Override
@@ -298,6 +317,7 @@ public class FrameActivity extends AppCompatActivity implements
                 ManyRedsDialog dialogManyReds = ManyRedsDialog.newInstance(redBall.getCount());
                 dialogManyReds.show(manager,"manyRedsDialog");
                 undoBlockFlag = true;
+                shotPottedStatistic();
                 break;
 
             case UNDO_BUTTON:
@@ -308,17 +328,27 @@ public class FrameActivity extends AppCompatActivity implements
                     return;
                 }
 
+                undoBlockFlag=true;
+
                 Toast.makeText(this, "UNDO", Toast.LENGTH_SHORT).show();
                 playerOne.setScore(previousUiState.getPrevPlayerOneScore());
                 playerTwo.setScore(previousUiState.getPrevPlayerTwoScore());
                 balls.setRemainingPoints(previousUiState.getPrevRemainingPoints());
 
-                if(previousUiState.getPrevButtonID() == R.id.miss_button)
+                if(previousUiState.getPrevButtonID() == R.id.miss_button || previousUiState.getPrevButtonID() == R.id.safe_button)
                 {
+                    safeShot = false;
+                    undoShotMissedStatistic();
                     records.remove(getLastRecord());
                     gamePlayers.changePlayer();
                     changePlayersUI();
                     recordAdapter.notifyDataSetChanged();
+                    if(undoMissSafeOnRed)
+                    {
+                        undoMissSafeOnRed=false;
+                        turnColorsOn();
+                    }
+                    remainingPointsView.setText(String.valueOf(balls.getRemainingPoints()));
                     return;
                 }
                 getLastRecord().swapImageArray(previousUiState.getPreviousImagesArray());
@@ -330,6 +360,8 @@ public class FrameActivity extends AppCompatActivity implements
                 remainingPointsView.setText(String.valueOf(balls.getRemainingPoints()));
 
                 positionAfterNoMoreReds = previousUiState.getPrevPositionAfterNoMoreReds();
+
+                undoShotPottedStatistic();
 
                 if(previousUiState.getPrevButtonID() == R.id.red_ball_button)
                 {
@@ -399,6 +431,7 @@ public class FrameActivity extends AppCompatActivity implements
     {
         Enums.winState result;
         EndMatchDialog dialogEnd;
+        NextFrameDialog dialogNext;
 
         switch (moreDialogButtonState)
         {
@@ -422,22 +455,42 @@ public class FrameActivity extends AppCompatActivity implements
 
                 result = gamePlayers.matchWin(frames);
 
+                playerOneStarts = !playerOneStarts;
+
+
                 if (result == Enums.winState.PLAYER_ONE_WIN_MATCH)
                 {
                     dialogEnd = EndMatchDialog.newInstance(playerOneFN,playerOneLN);
                     dialogEnd.show(manager,"endFrameDialog");
+                    redBall.setNoMoreBalls();
+                    colorBalls.setLastColorChoosed(true);
+                    positionAfterNoMoreReds=7;
                     break;
                 }
                 else if (result == Enums.winState.PLAYER_TWO_WIN_MATCH)
                 {
                     dialogEnd = EndMatchDialog.newInstance(playerTwoFN,playerTwoLN);
                     dialogEnd.show(manager,"endFrameDialog");
+                    redBall.setNoMoreBalls();
+                    colorBalls.setLastColorChoosed(true);
+                    positionAfterNoMoreReds=7;
                     break;
                 }
                 else
                 {
-                    playerOneStarts = !playerOneStarts;
-                    setFrame();
+                    if(gamePlayers.isPlayerOneTurn())
+                    {
+                        dialogNext = NextFrameDialog.newInstance(playerTwoFN,playerTwoLN);
+                        dialogNext.show(manager,"endFrameDialog");
+                    }
+                    else
+                    {
+                        dialogNext = NextFrameDialog.newInstance(playerOneFN,playerOneLN);
+                        dialogNext.show(manager,"endFrameDialog");
+                    }
+                    redBall.setNoMoreBalls();
+                    colorBalls.setLastColorChoosed(true);
+                    positionAfterNoMoreReds=7;
                 }
                 break;
 
@@ -490,6 +543,7 @@ public class FrameActivity extends AppCompatActivity implements
                 redBall.redBallPotted();
                 currentColorPotted = RED;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
             case R.id.yellow_ball_button:
@@ -497,6 +551,7 @@ public class FrameActivity extends AppCompatActivity implements
                 colorBalls.setCurrentColor(YELLOW);
                 currentColorPotted = YELLOW;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
             case R.id.green_ball_button:
@@ -504,6 +559,7 @@ public class FrameActivity extends AppCompatActivity implements
                 colorBalls.setCurrentColor(GREEN);
                 currentColorPotted = GREEN;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
             case R.id.brown_ball_button:
@@ -511,6 +567,7 @@ public class FrameActivity extends AppCompatActivity implements
                 colorBalls.setCurrentColor(BROWN);
                 currentColorPotted = BROWN;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
             case R.id.blue_ball_button:
@@ -518,6 +575,7 @@ public class FrameActivity extends AppCompatActivity implements
                 colorBalls.setCurrentColor(BLUE);
                 currentColorPotted = BLUE;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
             case R.id.pink_ball_button:
@@ -525,6 +583,7 @@ public class FrameActivity extends AppCompatActivity implements
                 colorBalls.setCurrentColor(PINK);
                 currentColorPotted = PINK;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
             case R.id.black_ball_button:
@@ -532,20 +591,35 @@ public class FrameActivity extends AppCompatActivity implements
                 colorBalls.setCurrentColor(BLACK);
                 currentColorPotted = BLACK;
                 undoBlockFlag = false;
+                shotPottedStatistic();
                 break;
 
+            case R.id.safe_button:
+                //nothing to do - going to miss_button
+
             case R.id.miss_button:
+
 
                 /* if next frame then do nothing */
                 if(gamePlayers.isNextFrame())
                 {
+                    currentScoredPoints = 0;
                     break;
                 }
+                if(R.id.safe_button != viewId)
+                {
+                    shotMissedStatistic();
+                }
+
                 /* clear current score points do not update score with points before */
                 currentScoredPoints = 0;
 
                 /* if player didn't pot a color after red the points are lost so update score with 7 */
-                if(redBall.isPotted() && !colorBalls.isLastColorChoosed()) currentScoredPoints = 7;
+                if(redBall.isPotted() && !colorBalls.isLastColorChoosed())
+                {
+                    undoMissSafeOnRed = true;
+                    currentScoredPoints = 7;
+                }
 
                 /* if player pot last red and didn't pot color set the UI to only yellow on table*/
                 if(redBall.noMoreRedBalls()&&positionAfterNoMoreReds==0)
@@ -569,6 +643,18 @@ public class FrameActivity extends AppCompatActivity implements
 
             case R.id.foul_button:
 
+                if(safeShot && gamePlayers.isPlayerOneTurn())
+                {
+                    playerTwoStatistics.safeSuccessful();
+                    safeShot=false;
+                }
+                else if (safeShot && !gamePlayers.isPlayerOneTurn())
+                {
+                    playerOneStatistics.safeSuccessful();
+                    safeShot=false;
+                }
+                shotMissedStatistic();
+                shotFouledStatistic();
                 /* show foul dialog */
                 FoulDialog dialog = FoulDialog.newInstance(redBall.getCount());
                 dialog.show(manager,"TAG");
@@ -586,6 +672,22 @@ public class FrameActivity extends AppCompatActivity implements
         updateUIWhole(viewId);
 
 
+        if(safeShot && (viewId == R.id.miss_button || viewId == R.id.safe_button))
+        {
+            safeSuccessStatistic();
+            safeShot=false;
+        }
+        else if(safeShot)
+        {
+            safeFailedStatistic();
+            safeShot=false;
+        }
+
+
+        if(viewId==R.id.safe_button)
+        {
+            safeShot=true;
+        }
 
 
 
@@ -732,6 +834,7 @@ public class FrameActivity extends AppCompatActivity implements
     {
         if(records!=null)
         {
+            allRecords.addAll(records);
             records.clear();
         }
         records = new ArrayList<>();
@@ -888,7 +991,16 @@ public class FrameActivity extends AppCompatActivity implements
                 //Next frame logic is here
                 if(gamePlayers.isNextFrame() && currentButton == R.id.miss_button)
                 {
-                   setFrame();
+                    if(endMatch)
+                    {
+                      goToSummaryActivity();
+
+
+                    }
+                    else
+                    {
+                        setFrame();
+                    }
                 }
                 gamePlayers.setPlayerMissed(false);
                 isFreeBall = false;
@@ -993,6 +1105,7 @@ public class FrameActivity extends AppCompatActivity implements
 
     private void setFrame()
     {
+        safeShot=false;
         positionAfterNoMoreReds = 0;
         undoBlockFlag = true;
         playerOneView.setText(playerOne.getFirstName().substring(0,1) + "." + playerOne.getLastName().substring(0,1));
@@ -1098,6 +1211,8 @@ public class FrameActivity extends AppCompatActivity implements
         playerOne = new Player(playerOneFN,playerOneLN);
         playerTwo = new Player(playerTwoFN,playerTwoLN);
         gamePlayers = new GamePlayers(playerOne,playerTwo);
+        playerOneStatistics = new PlayerStatistics();
+        playerTwoStatistics = new PlayerStatistics();
     }
 
     private void dialogWhoStarts()
@@ -1184,9 +1299,324 @@ public class FrameActivity extends AppCompatActivity implements
         redButton.setEnabled(false);
         redButton.setImageResource(R.drawable.disabledball);}
 
+    private void disableBalls()
+    {
+        toggleColorButtons(false);
+        redButton.setEnabled(false);
+        redButton.setImageResource(R.drawable.disabledball);
+    }
+
     private Record getLastRecord()
     {
         return records.get(records.size()-1);
     }
+
+    private void shotPottedStatistic()
+    {
+        if(gamePlayers.isPlayerOneTurn())
+        {
+            playerOneStatistics.shotPotted();
+        }
+        else
+        {
+            playerTwoStatistics.shotPotted();
+        }
+    }
+    private void shotMissedStatistic()
+    {
+        if(gamePlayers.isPlayerOneTurn())
+        {
+            playerOneStatistics.shotMissed();
+        }
+        else
+        {
+            playerTwoStatistics.shotMissed();
+        }
+    }
+    private void undoShotPottedStatistic()
+    {
+        if(gamePlayers.isPlayerOneTurn())
+        {
+            playerOneStatistics.undoPotted();
+        }
+        else
+        {
+            playerTwoStatistics.undoPotted();
+        }
+    }
+    private void undoShotMissedStatistic()
+    {
+        if(gamePlayers.isPlayerOneTurn())
+        {
+            playerOneStatistics.undoMissed();
+        }
+        else
+        {
+            playerTwoStatistics.undoMissed();
+        }
+    }
+    private void shotFouledStatistic()
+    {
+        if(gamePlayers.isPlayerOneTurn())
+        {
+            playerOneStatistics.shotFouled();
+        }
+        else
+        {
+            playerTwoStatistics.shotFouled();
+        }
+    }
+    private void safeSuccessStatistic()
+    {
+        if(gamePlayers.isPlayerOneTurn())
+        {
+            playerOneStatistics.safeSuccessful();
+        }
+        else
+        {
+            playerTwoStatistics.safeSuccessful();
+        }
+    }
+    private void safeFailedStatistic()
+    {
+        if(!gamePlayers.isPlayerOneTurn()) //for fail miss button is not clicked so players are not changed
+        {
+            playerOneStatistics.safeFailed();
+        }
+        else
+        {
+            playerTwoStatistics.safeFailed();
+        }
+    }
+
+
+    /**
+     *
+     * Additional functions for player statistics
+     *
+     */
+
+
+    private int firstPlayerHighestBreakSearch()
+    {
+        if(records.isEmpty()) return 0;
+
+        int maxBreak=0;
+        ArrayList<Integer> maxBreakArray = new ArrayList<>();
+        ArrayList<Record> firstPlayerRecords = new ArrayList<>();
+
+
+
+        for (Record record: allRecords)
+        {
+            if(record.getPlayerName().equals(playerOne.getFirstName()))
+            {
+                if(record.getPlayerLastName().equals(playerOne.getLastName()))
+                {
+                    firstPlayerRecords.add(record);
+                }
+            }
+        }
+
+        if (firstPlayerRecords.isEmpty()) return 0;
+
+
+        for(int i=0; i<firstPlayerRecords.size();i++)
+        {
+            if(firstPlayerRecords.get(i).getBreakScore()>=maxBreak)
+            {
+                maxBreak = firstPlayerRecords.get(i).getBreakScore();
+                maxBreakArray = new ArrayList<>(firstPlayerRecords.get(i).getImageArray());
+            }
+        }
+
+
+        playerOneStatistics.setImageBreak(maxBreakArray);
+        return maxBreak;
+
+    }
+
+    private int secondPlayerHighestBreakSearch()
+    {
+        if(records.isEmpty()) return 0;
+
+        int maxBreak=0;
+        ArrayList<Integer> maxBreakArray = new ArrayList<>();
+        ArrayList<Record> secondPlayerRecords = new ArrayList<>();
+
+
+
+        for (Record record: allRecords)
+        {
+            if(record.getPlayerName().equals(playerTwo.getFirstName()))
+            {
+                if(record.getPlayerLastName().equals(playerTwo.getLastName()))
+                {
+                    secondPlayerRecords.add(record);
+                }
+            }
+        }
+        if (secondPlayerRecords.isEmpty()) return 0;
+
+
+        for(int i=0; i<secondPlayerRecords.size();i++)
+        {
+            if(secondPlayerRecords.get(i).getBreakScore()>=maxBreak)
+            {
+                maxBreak = secondPlayerRecords.get(i).getBreakScore();
+                maxBreakArray = new ArrayList<>(secondPlayerRecords.get(i).getImageArray());
+            }
+        }
+
+
+        playerTwoStatistics.setImageBreak(maxBreakArray);
+
+        return maxBreak;
+
+    }
+
+    private int firstPlayerAverageBreak()
+    {
+        if(records.isEmpty()) return 0;
+
+        int avgBreak;
+        ArrayList<Record> firstPlayerRecords = new ArrayList<>();
+
+
+        for (Record record: allRecords)
+        {
+            if(record.getPlayerName().equals(playerOne.getFirstName()))
+            {
+                if(record.getPlayerLastName().equals(playerOne.getLastName()))
+                {
+                    firstPlayerRecords.add(record);
+                }
+            }
+        }
+
+        if(firstPlayerRecords.isEmpty()) return 0;
+
+        ArrayList<Integer> breakScores = new ArrayList<>();
+
+        for (Record record: firstPlayerRecords)
+        {
+            breakScores.add(record.getBreakScore());
+        }
+
+        int sumBreak=0;
+
+        for (int breaks: breakScores)
+        {
+                sumBreak+=breaks;
+        }
+
+        avgBreak = Math.round((float)sumBreak/(float)breakScores.size());
+
+        return avgBreak;
+    }
+
+    private int secondPlayerAverageBreak()
+    {
+        if(records.isEmpty()) return 0;
+
+        int avgBreak;
+        ArrayList<Record> secondPlayerRecords = new ArrayList<>();
+
+
+        for (Record record: allRecords)
+        {
+            if(record.getPlayerName().equals(playerTwo.getFirstName()))
+            {
+                if(record.getPlayerLastName().equals(playerTwo.getLastName()))
+                {
+                    secondPlayerRecords.add(record);
+                }
+            }
+        }
+
+        if(secondPlayerRecords.isEmpty()) return 0;
+
+        ArrayList<Integer> breakScores = new ArrayList<>();
+
+        for (Record record: secondPlayerRecords)
+        {
+            breakScores.add(record.getBreakScore());
+        }
+
+        int sumBreak=0;
+
+        for (int breaks: breakScores)
+        {
+            sumBreak+=breaks;
+        }
+
+        avgBreak = Math.round((float)sumBreak/(float)breakScores.size());
+
+        return avgBreak;
+    }
+
+
+    private void goToSummaryActivity()
+    {
+        if(records!=null)
+        {
+            allRecords.addAll(records);
+        }
+
+        Intent intent = new Intent(FrameActivity.this,SummaryActivity.class);
+        intent.putExtra("playerOneFrames",playerOne.getFrames());
+        intent.putExtra("playerTwoFrames",playerTwo.getFrames());
+        intent.putExtra("playerOneFirstName",playerOne.getFirstName());
+        intent.putExtra("playerTwoFirstName",playerTwo.getFirstName());
+        intent.putExtra("playerOneLastName",playerOne.getLastName());
+        intent.putExtra("playerTwoLastName",playerTwo.getLastName());
+
+        intent.putExtra("playerOneAllShots",playerOneStatistics.getAllShotsCount());
+        intent.putExtra("playerTwoAllShots",playerTwoStatistics.getAllShotsCount());
+
+        intent.putExtra("playerOnePottedShots",playerOneStatistics.getPottedShotsCount());
+        intent.putExtra("playerTwoPottedShots",playerTwoStatistics.getPottedShotsCount());
+
+        intent.putExtra("playerOneMissedShots",playerOneStatistics.getMissedShotsCount());
+        intent.putExtra("playerTwoMissedShots",playerTwoStatistics.getMissedShotsCount());
+
+        intent.putExtra("playerOnePottedShotsPercent",playerOneStatistics.calcPottedShotsPercent());
+        intent.putExtra("playerTwoPottedShotsPercent",playerTwoStatistics.calcPottedShotsPercent());
+
+        intent.putExtra("playerOnePresence",playerOneStatistics.calcPresence(playerTwoStatistics.getAllShotsCount()));
+        intent.putExtra("playerTwoPresence",playerTwoStatistics.calcPresence(playerOneStatistics.getAllShotsCount()));
+
+        intent.putExtra("playerOneBreak",firstPlayerHighestBreakSearch());
+        intent.putExtra("playerTwoBreak",secondPlayerHighestBreakSearch());
+
+        intent.putExtra("playerOneAverageBreak",firstPlayerAverageBreak());
+        intent.putExtra("playerTwoAverageBreak",secondPlayerAverageBreak());
+
+        intent.putExtra("playerOneAllSafeShots",playerOneStatistics.getSafeCount());
+        intent.putExtra("playerTwoAllSafeShots",playerTwoStatistics.getSafeCount());
+
+        intent.putExtra("playerOneSafeShotSuccessful",playerOneStatistics.getSafeSuccessful());
+        intent.putExtra("playerTwoSafeShotSuccessful",playerTwoStatistics.getSafeSuccessful());
+
+        intent.putExtra("playerOneSafeShotFailed",playerOneStatistics.getSafeFailed());
+        intent.putExtra("playerTwoSafeShotFailed",playerTwoStatistics.getSafeFailed());
+
+        intent.putExtra("playerOneSafeShotsPercent",playerOneStatistics.calcSafeShotsPercent());
+        intent.putExtra("playerTwoSafeShotsPercent",playerTwoStatistics.calcSafeShotsPercent());
+
+        intent.putExtra("playerOneFouls",playerOneStatistics.getFoulCount());
+        intent.putExtra("playerTwoFouls",playerTwoStatistics.getFoulCount());
+
+        intent.putIntegerArrayListExtra("playerOneImageBreak",playerOneStatistics.getImageBreak());
+        intent.putIntegerArrayListExtra("playerTwoImageBreak",playerTwoStatistics.getImageBreak());
+
+        startActivity(intent);
+        finish();
+    }
+
+
+
+
+
 
 }
