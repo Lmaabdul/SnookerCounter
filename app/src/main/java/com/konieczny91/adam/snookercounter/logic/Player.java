@@ -10,10 +10,17 @@ public class Player {
     private String lastName;
     private int score=0;
     private int frames=0;
-
+    private int id = -1;
 
     public Player(String firstName,String lastName)
     {
+        this.firstName  = firstName;
+        this.lastName   = lastName;
+    }
+
+    public Player(int id, String firstName,String lastName)
+    {
+        this.id         = id;
         this.firstName  = firstName;
         this.lastName   = lastName;
     }
@@ -38,4 +45,6 @@ public class Player {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public int getId(){ return id;}
 }

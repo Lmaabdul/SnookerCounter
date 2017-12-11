@@ -28,7 +28,14 @@
         <activity
             android:name=".StatisticActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SummaryActivity"></activity>
+        <activity android:name=".SummaryActivity" />
+
+        <provider
+            android:name=".data.PlayerProvider"
+            android:authorities="com.konieczny91.adam.snookercounter"
+            android:exported="false" />
+
+        <activity android:name=".PlayerStatisticActivity"></activity>
     </application>
 
 </manifest>

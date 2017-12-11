@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.konieczny91.adam.snookercounter.data.PlayerDbHelper;
 import com.konieczny91.adam.snookercounter.logic.Player;
 import com.konieczny91.adam.snookercounter.logic.SpinnerAdapter;
 import com.shawnlin.numberpicker.NumberPicker;
@@ -47,19 +48,28 @@ public class MatchConfigurationActivity extends AppCompatActivity {
     Player playerOne;
     Player playerTwo;
 
+    PlayerDbHelper playerDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_configuration);
 
+        playerDatabase = new PlayerDbHelper(this);
+
         initViews();
         customFontTexts();
-        createPlayer();
+        getExistingPlayers();
         createGuestPlayers();
+        createPlayer();
         spinnersInitListeners();
         numberPickerInit();
         startMatch();
+    }
+
+    private void getExistingPlayers()
+    {
+        players = new ArrayList<>(playerDatabase.getAllPlayers());
     }
 
     private void spinnersInitListeners()
@@ -127,7 +137,7 @@ public class MatchConfigurationActivity extends AppCompatActivity {
     }
 
     private void createPlayer()
-    {
+     {
         createPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -251,6 +261,7 @@ public class MatchConfigurationActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    playerDatabase.insertPlayer(firstName,lastName);
                     players.add(new Player(firstName, lastName));
                     dialog.dismiss();
                 }
